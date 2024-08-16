@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 object NetworkClient {
 
     val get = ktorfit {
-        baseUrl("https://gdg.community.dev/")
+        baseUrl(Url.BASE)
         httpClient(HttpClient {
             install(ContentNegotiation) {
                 json(Json { isLenient = true; ignoreUnknownKeys = true })
