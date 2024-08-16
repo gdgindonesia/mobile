@@ -13,8 +13,9 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import gdgindonesia.composeapp.generated.resources.Res
-import gdgindonesia.composeapp.generated.resources.compose_multiplatform
+import gdgindonesia.app.generated.resources.Res
+import gdgindonesia.app.generated.resources.compose_multiplatform
+import id.gdg.chapter.domain.GetChapterListUseCase
 
 @Composable
 @Preview
@@ -26,7 +27,7 @@ fun App() {
                 Text("Click me!")
             }
             AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
+                val greeting = remember { GetChapterListUseCase().invoke() }
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Compose: $greeting")

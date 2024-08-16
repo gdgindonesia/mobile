@@ -1,4 +1,5 @@
 rootProject.name = "GDGIndonesia"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -28,4 +29,11 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+// App
+include(":app")
+
+// Features
+include(":gdg-chapter")
+
+// Libraries
+include(":gdg-network")

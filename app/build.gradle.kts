@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -23,7 +25,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "app"
             isStatic = true
         }
     }
@@ -35,6 +37,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            implementation(project(":gdg-chapter"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -44,6 +48,20 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
         }
+    }
+}
+
+dependencies {
+    with("de.jensklingenberg.ktorfit:ktorfit-ksp:2.0.0-beta1") {
+        add("kspCommonMainMetadata", this)
+        add("kspAndroid", this)
+        add("kspAndroidTest", this)
+        add("kspIosX64", this)
+        add("kspIosX64Test", this)
+        add("kspIosArm64", this)
+        add("kspIosArm64Test", this)
+        add("kspIosSimulatorArm64", this)
+        add("kspIosSimulatorArm64Test", this)
     }
 }
 
