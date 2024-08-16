@@ -34,6 +34,7 @@ include(":app")
 
 // Features
 include(":gdg-chapter")
+include(":gdg-events")
 
 // Libraries
 include(":gdg-network")
