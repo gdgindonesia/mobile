@@ -26,10 +26,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Ktorfit
-            implementation(libs.ktorfit)
-            implementation(libs.ktorfit.converters.response)
-            implementation(libs.ktorfit.converters.call)
-            implementation(libs.ktorfit.converters.flow)
+            api(libs.ktorfit)
+            api(libs.ktorfit.converters.response)
+            api(libs.ktorfit.converters.call)
+            api(libs.ktorfit.converters.flow)
 
             // Ktor
             implementation(libs.ktor.client.serialization)
