@@ -25,6 +25,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.common.koin)
+            api(libs.androidx.datastore)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

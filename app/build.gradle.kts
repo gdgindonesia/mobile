@@ -36,6 +36,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.common.koin.android)
+            implementation(libs.androidx.datastore)
         }
         commonMain.dependencies {
             implementation(project(":gdg-chapter"))

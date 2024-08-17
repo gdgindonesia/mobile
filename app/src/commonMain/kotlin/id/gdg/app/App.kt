@@ -17,6 +17,7 @@ import gdgindonesia.app.generated.resources.Res
 import gdgindonesia.app.generated.resources.compose_multiplatform
 import id.gdg.app.di.ViewModelFactory
 import id.gdg.chapter.domain.GetChapterListUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -27,7 +28,11 @@ fun App(viewModel: AppViewModel = ViewModelFactory.create()) {
         val state by viewModel.previousEvents.collectAsState()
 
         LaunchedEffect(Unit) {
-            viewModel.getUpcomingEvent()
+            viewModel.getChapterList().map {
+                delay(2000)
+
+                viewModel.setChapterId(it.id)
+            }
         }
 
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {

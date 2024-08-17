@@ -1,6 +1,6 @@
 package id.gdg.chapter.domain
 
-import id.gdg.chapter.data.Chapter
+import id.gdg.chapter.data.entity.Chapter
 import id.gdg.chapter.model.ChapterModel
 
 class GetChapterListUseCase {
