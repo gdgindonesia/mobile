@@ -3,6 +3,7 @@ package id.gdg.event.data.source
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
+import id.gdg.event.data.entity.EventDetail
 import id.gdg.event.data.entity.Events
 import id.gdg.network.Url
 
@@ -23,4 +24,10 @@ interface EventApi {
          */
         @Query("order") order: String = "-start_date",
     ): Events
+
+
+    @GET("${Url.PATH_EVENT_DETAIL}/{event_id}")
+    suspend fun fetchEventDetail(
+        @Path("event_id") eventId: Int,
+    ) : EventDetail
 }

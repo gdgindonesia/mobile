@@ -1,5 +1,7 @@
 package id.gdg.event.di
 
+import id.gdg.event.data.repository.EventDetailRepository
+import id.gdg.event.data.repository.EventDetailRepositoryImpl
 import id.gdg.event.data.repository.EventRepository
 import id.gdg.event.data.repository.EventRepositoryImpl
 import id.gdg.event.data.source.EventApi
@@ -11,8 +13,12 @@ import org.koin.dsl.module
 
 val eventModule = module {
     single<EventApi> { NetworkClient.get.create() }
-    single<EventRepository> { EventRepositoryImpl(get()) }
 
+    // Repositories
+    single<EventRepository> { EventRepositoryImpl(get()) }
+    single<EventDetailRepository> { EventDetailRepositoryImpl(get()) }
+
+    // Domains
     singleOf(::GetPreviousEventUseCase)
     singleOf(::GetUpComingEventUseCase)
 }
