@@ -1,6 +1,6 @@
 package id.gdg.event.domain.mapper
 
-import id.gdg.event.data.entity.Event
+import id.gdg.event.data.entity.Events.Event
 import id.gdg.event.model.EventModel
 
 fun Event.toEventModel(): EventModel {

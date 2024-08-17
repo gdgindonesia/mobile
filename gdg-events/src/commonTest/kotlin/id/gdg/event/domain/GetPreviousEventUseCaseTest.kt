@@ -1,11 +1,9 @@
 package id.gdg.event.domain
 
 import id.gdg.event.stub.EventRepositoryStub
-import id.gdg.event.stub.EventRepositoryThrowableStub
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class GetPreviousEventUseCaseTest {
 
@@ -13,6 +11,8 @@ class GetPreviousEventUseCaseTest {
     fun `invoked should return a list of previous events`() {
         runBlocking {
             val repository = EventRepositoryStub()
+            repository.setStatus(true)
+
             val useCase = GetPreviousEventUseCase(repository)
 
             assertEquals(3, useCase(0).size)
@@ -22,10 +22,11 @@ class GetPreviousEventUseCaseTest {
     @Test
     fun `invoked should return a throwable error`() {
         runBlocking {
-            val repository = EventRepositoryThrowableStub()
-            val useCase = GetPreviousEventUseCase(repository)
+            val repository = EventRepositoryStub()
+            repository.setStatus(false)
 
-            assertFailsWith<IllegalStateException> { useCase(0) }
+            val useCase = GetPreviousEventUseCase(repository)
+            assertEquals(listOf(), useCase(0))
         }
     }
 }
