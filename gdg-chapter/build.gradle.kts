@@ -26,6 +26,9 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.common.koin)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 

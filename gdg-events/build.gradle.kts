@@ -32,6 +32,10 @@ kotlin {
             implementation(libs.kotlin.serialization.json)
             implementation(libs.common.koin)
         }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 

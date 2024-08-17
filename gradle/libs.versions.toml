@@ -13,6 +13,7 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 common-datetime = "0.5.0"
 common-essenty = "1.2.0"
+common-kotest = "5.9.1"
 compose-plugin = "1.6.11"
 jetbrainsKotlinJvm = "1.9.0"
 junit = "4.13.2"
@@ -24,6 +25,8 @@ kotlinx-serialization = "1.9.22"
 ksp = "2.0.0-1.0.24"
 ktor = "2.3.10"
 ktorfit = "2.0.0-beta1"
+test-coroutines = "1.6.4"
+test-turbine = "0.12.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -58,6 +61,9 @@ kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializat
 common-koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 common-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 common-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "common-essenty" }
+
+test-turbine = { module = "app.cash.turbine:turbine", version.ref = "test-turbine" }
+test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "test-coroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
