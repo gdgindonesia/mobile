@@ -46,6 +46,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.navigation.compose)
 
             // Compose
             implementation(compose.runtime)
@@ -57,6 +58,7 @@ kotlin {
 
             // Common
             implementation(libs.common.koin)
+            implementation(libs.util.constraintlayout)
         }
     }
 }

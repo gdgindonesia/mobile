@@ -11,7 +11,9 @@ androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.0"
 androidx-material = "1.12.0"
+androidx-navigation-compose = "2.7.0-alpha03"
 androidx-test-junit = "1.2.1"
+constraint-layout = "0.4.0"
 common-datetime = "0.5.0"
 common-essenty = "1.2.0"
 common-kotest = "5.9.1"
@@ -38,6 +40,7 @@ androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
+androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -66,6 +69,8 @@ common-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref =
 
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "test-turbine" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "test-coroutines" }
+
+util-constraintlayout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraint-layout" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

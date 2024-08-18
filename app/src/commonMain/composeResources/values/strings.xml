@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Google\nDeveloper\nGroups\nIndonesia</string>
+
+    <string name="onboarding_description">Portal komunitas dari Google Developers untuk Indonesia. Bergabung dan belajar bersama!</string>
+    <string name="onboarding_choose_chapter">Pilih chapter terdekat dari kotamu</string>
+
+    <string name="common_continue">LANJUTKAN</string>
+</resources>
