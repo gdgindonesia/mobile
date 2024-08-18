@@ -28,6 +28,9 @@ class GetChapterListUseCase {
             Chapter(712, "Semarang"),
             Chapter(1053, "Makassar"),
             Chapter(1332, "Medan"),
+            Chapter(76, "Cloud Surabaya"),
+            Chapter(137, "Cloud Bandung"),
+            Chapter(1158, "Cloud Jakarta"),
         )
     }
 }
