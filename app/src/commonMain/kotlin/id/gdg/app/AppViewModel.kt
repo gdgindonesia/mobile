@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import id.gdg.chapter.domain.GetChapterIdUseCase
 import id.gdg.chapter.domain.GetChapterListUseCase
 import id.gdg.chapter.domain.SetChapterIdUseCase
+import id.gdg.event.domain.GetEventDetailUseCase
 import id.gdg.event.domain.GetPreviousEventUseCase
 import id.gdg.event.domain.GetUpComingEventUseCase
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ class AppViewModel(
     // Events
     private val upComingEventUseCase: GetUpComingEventUseCase,
     private val previousEventUseCase: GetPreviousEventUseCase,
+    private val eventDetailUseCase: GetEventDetailUseCase,
 ) : ViewModel() {
 
     private var _previousEvents = MutableStateFlow<List<String>>(emptyList())
