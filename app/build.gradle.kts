@@ -60,6 +60,12 @@ kotlin {
             implementation(libs.common.koin)
             implementation(libs.util.constraintlayout)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.common.koin.test)
+            implementation(libs.test.turbine)
+            implementation(libs.test.coroutines)
+        }
     }
 }
 

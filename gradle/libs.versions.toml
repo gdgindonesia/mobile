@@ -16,7 +16,6 @@ androidx-test-junit = "1.2.1"
 constraint-layout = "0.4.0"
 common-datetime = "0.5.0"
 common-essenty = "1.2.0"
-common-kotest = "5.9.1"
 compose-plugin = "1.6.11"
 jetbrainsKotlinJvm = "1.9.0"
 junit = "4.13.2"
@@ -29,6 +28,7 @@ ksp = "2.0.0-1.0.24"
 ktor = "2.3.10"
 ktorfit = "2.0.0-beta1"
 test-coroutines = "1.6.4"
+test-mockk = "1.13.12"
 test-turbine = "0.12.1"
 
 [libraries]
@@ -64,10 +64,12 @@ kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", v
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serializable-json" }
 
 common-koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+common-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 common-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 common-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "common-essenty" }
 
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "test-turbine" }
+test-mockk = { module = "io.mockk:mockk", version.ref = "test-mockk" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "test-coroutines" }
 
 util-constraintlayout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraint-layout" }

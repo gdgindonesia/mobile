@@ -15,7 +15,7 @@ class GetEventDetailUseCaseTest {
            val repository = EventDetailRepositoryStub()
            repository.setStatus(true)
 
-           val useCase = GetEventDetailUseCase(repository)
+           val useCase = GetEventDetailUseCaseImpl(repository)
 
            val expectedValue = EventDetailFake().create<EventDetail>().title
            assertEquals(expectedValue, useCase(EventDetailFake.EVENT_DETAIL_ID))
@@ -28,7 +28,7 @@ class GetEventDetailUseCaseTest {
             val repository = EventDetailRepositoryStub()
             repository.setStatus(false)
 
-            val useCase = GetEventDetailUseCase(repository)
+            val useCase = GetEventDetailUseCaseImpl(repository)
             assertEquals("", useCase(0))
         }
     }

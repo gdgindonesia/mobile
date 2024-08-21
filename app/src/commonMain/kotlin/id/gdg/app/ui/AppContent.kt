@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,16 +23,12 @@ fun AppContent(
     viewModel: AppViewModel = ViewModelFactory.create(),
     navController: NavHostController = rememberNavController()
 ) {
-    val state by viewModel.state.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.sendEvent(AppEvent.InitActiveChapterId)
-    }
+    val chapterUiState by viewModel.chapterUiState.collectAsState()
 
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = defaultRoute(state.activeChapterId),
+            startDestination = AppRouter.Onboarding.route, //defaultRoute(state.activeChapterId),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -51,7 +46,7 @@ fun AppContent(
                 OnboardingScreen(
                     chapterList = viewModel.getChapterList(),
                     onChapterSelected = { chapterId ->
-                        viewModel.sendEvent(AppEvent.SetActiveChapterId(chapterId))
+                        viewModel.sendEvent(AppEvent.ChangeChapterId(chapterId))
 
                         navController.navigateTo(
                             from = AppRouter.Onboarding,
@@ -63,9 +58,9 @@ fun AppContent(
 
             composable(route = AppRouter.Home.route) {
                 MainScreen(
-                    state = state,
-                    onFetchEventRequested = {
-                        viewModel.sendEvent(AppEvent.FetchEvent)
+                    state = chapterUiState,
+                    onChapterChanged = { chapterId ->
+                        viewModel.sendEvent(AppEvent.ChangeChapterId(chapterId))
                     }
                 )
             }
@@ -76,9 +71,9 @@ fun AppContent(
 private fun NavHostController.navigateTo(from: AppRouter? = null, to: AppRouter) {
     navigate(to.route) {
         if (from != null) {
-            popUpTo(from.route) {
-                inclusive = true
-            }
+//            popUpTo(from.route) {
+//                inclusive = true
+//            }
         }
     }
 }

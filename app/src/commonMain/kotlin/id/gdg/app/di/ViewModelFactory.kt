@@ -7,9 +7,8 @@ import id.gdg.chapter.domain.GetChapterIdUseCase
 import id.gdg.chapter.domain.GetChapterListUseCase
 import id.gdg.chapter.domain.SetChapterIdUseCase
 import id.gdg.event.domain.GetEventDetailUseCase
-import id.gdg.event.domain.GetEventsUseCase
 import id.gdg.event.domain.GetPreviousEventUseCase
-import id.gdg.event.domain.GetUpComingEventUseCase
+import id.gdg.event.domain.GetUpcomingEventUseCase
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -21,7 +20,9 @@ object ViewModelFactory : KoinComponent {
     private val setCurrentChapterUseCase: SetChapterIdUseCase by inject()
 
     // Events
-    private val eventsUseCase: GetEventsUseCase by inject()
+    private val upComingEventUseCase: GetUpcomingEventUseCase by inject()
+    private val previousEventUseCase: GetPreviousEventUseCase by inject()
+    private val eventDetailUseCase: GetEventDetailUseCase by inject()
 
     @Composable
     fun create() = viewModel {
@@ -29,7 +30,9 @@ object ViewModelFactory : KoinComponent {
             chapterListUseCase,
             getCurrentChapterUseCase,
             setCurrentChapterUseCase,
-            eventsUseCase
+            upComingEventUseCase,
+            previousEventUseCase,
+            eventDetailUseCase
         )
     }
 }

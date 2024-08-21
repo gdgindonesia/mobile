@@ -13,7 +13,7 @@ class GetPreviousEventUseCaseTest {
             val repository = EventRepositoryStub()
             repository.setStatus(true)
 
-            val useCase = GetPreviousEventUseCase(repository)
+            val useCase = GetPreviousEventUseCaseImpl(repository)
 
             assertEquals(3, useCase(0).size)
         }
@@ -25,7 +25,7 @@ class GetPreviousEventUseCaseTest {
             val repository = EventRepositoryStub()
             repository.setStatus(false)
 
-            val useCase = GetPreviousEventUseCase(repository)
+            val useCase = GetPreviousEventUseCaseImpl(repository)
             assertEquals(listOf(), useCase(0))
         }
     }
