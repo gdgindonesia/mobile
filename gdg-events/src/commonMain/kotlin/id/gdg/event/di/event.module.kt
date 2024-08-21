@@ -5,12 +5,13 @@ import id.gdg.event.data.repository.EventDetailRepositoryImpl
 import id.gdg.event.data.repository.EventRepository
 import id.gdg.event.data.repository.EventRepositoryImpl
 import id.gdg.event.data.source.EventApi
-import id.gdg.event.domain.GetEventsUseCase
 import id.gdg.event.domain.GetEventDetailUseCase
+import id.gdg.event.domain.GetEventDetailUseCaseImpl
 import id.gdg.event.domain.GetPreviousEventUseCase
-import id.gdg.event.domain.GetUpComingEventUseCase
+import id.gdg.event.domain.GetPreviousEventUseCaseImpl
+import id.gdg.event.domain.GetUpcomingEventUseCase
+import id.gdg.event.domain.GetUpcomingEventUseCaseImpl
 import id.gdg.network.NetworkClient
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val eventModule = module {
@@ -21,9 +22,7 @@ val eventModule = module {
     single<EventDetailRepository> { EventDetailRepositoryImpl(get()) }
 
     // Domains
-    singleOf(::GetPreviousEventUseCase)
-    singleOf(::GetUpComingEventUseCase)
-    singleOf(::GetEventsUseCase)
-
-    singleOf(::GetEventDetailUseCase)
+    single<GetEventDetailUseCase> { GetEventDetailUseCaseImpl(get()) }
+    single<GetUpcomingEventUseCase> { GetUpcomingEventUseCaseImpl(get()) }
+    single<GetPreviousEventUseCase> { GetPreviousEventUseCaseImpl(get()) }
 }

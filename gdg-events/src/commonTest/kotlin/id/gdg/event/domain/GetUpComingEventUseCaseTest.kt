@@ -14,7 +14,7 @@ class GetUpComingEventUseCaseTest {
             val repository = EventRepositoryStub()
             repository.setStatus(true)
 
-            val useCase = GetUpComingEventUseCase(repository)
+            val useCase = GetUpcomingEventUseCaseImpl(repository)
 
             assertTrue { useCase(0) != null }
         }
@@ -26,7 +26,7 @@ class GetUpComingEventUseCaseTest {
             val repository = EventRepositoryStub()
             repository.setStatus(false)
 
-            val useCase = GetUpComingEventUseCase(repository)
+            val useCase = GetUpcomingEventUseCaseImpl(repository)
             assertEquals(null, useCase(0))
         }
     }

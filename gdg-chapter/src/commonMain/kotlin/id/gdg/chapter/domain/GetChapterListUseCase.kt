@@ -3,9 +3,14 @@ package id.gdg.chapter.domain
 import id.gdg.chapter.data.entity.Chapter
 import id.gdg.chapter.model.ChapterModel
 
-class GetChapterListUseCase {
+interface GetChapterListUseCase {
 
-    operator fun invoke() = chapterList()
+    operator fun invoke(): List<ChapterModel>
+}
+
+class GetChapterListUseCaseImpl : GetChapterListUseCase {
+
+    override operator fun invoke() = chapterList()
         .map { ChapterModel(it.id, absoluteChapterName(it.name)) }
 
     private fun absoluteChapterName(city: String) = "GDG $city"

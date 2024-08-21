@@ -80,21 +80,21 @@ fun ConstraintLayoutScope.gdgWordingContent(
             painter = painterResource(Res.drawable.ic_logo_gdg),
             contentDescription = null,
             modifier = modifier
-                .width(56.dp)
+                .width(48.dp)
                 .padding(bottom = 18.dp)
         )
 
         Text(
             text = stringResource(Res.string.app_name),
-            fontSize = 48.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.SemiBold,
-            lineHeight = 56.sp
+            lineHeight = 32.sp
         )
 
         Text(
             text = stringResource(Res.string.onboarding_description),
-            fontSize = 18.sp,
-            lineHeight = 28.sp,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
             modifier = modifier
                 .fillMaxWidth(0.5f)
                 .padding(top = 4.dp)
