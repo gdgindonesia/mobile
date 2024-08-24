@@ -24,6 +24,7 @@ kotlin = "2.0.0"
 kotlin-coroutines = "1.8.0"
 kotlin-serializable-json = "1.6.1"
 kotlinx-serialization = "1.9.22"
+kover = "0.8.3"
 ksp = "2.0.0-1.0.24"
 ktor = "2.3.10"
 ktorfit = "2.0.0-beta1"
@@ -84,3 +85,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

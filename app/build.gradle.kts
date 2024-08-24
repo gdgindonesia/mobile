@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kover)
 }
 
 kotlin {

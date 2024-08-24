@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kover)
 }
 
 kotlin {

@@ -18,7 +18,10 @@ class GetChapterListUseCaseList {
             ChapterModel(711, "GDG Depok"),
             ChapterModel(712, "GDG Semarang"),
             ChapterModel(1053, "GDG Makassar"),
-            ChapterModel(1332, "GDG Medan")
+            ChapterModel(1332, "GDG Medan"),
+            ChapterModel(76, "GDG Cloud Surabaya"),
+            ChapterModel(137, "GDG Cloud Bandung"),
+            ChapterModel(1158, "GDG Cloud Jakarta")
         )
 
         val useCase: GetChapterListUseCase = GetChapterListUseCaseImpl()
