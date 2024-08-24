@@ -19,7 +19,8 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    
+    jvmToolchain(17)
+
     listOf(
         iosX64(),
         iosArm64(),
