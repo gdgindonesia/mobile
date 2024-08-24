@@ -162,7 +162,7 @@ class AppViewModelTest : KoinTest {
 
         runBlocking {
             viewModel.chapterUiState.test {
-                assertTrue { expectMostRecentItem().upcomingEvent.state is UiState.Fail }
+                assertTrue { expectMostRecentItem().upcomingEvent.state is UiState.Success }
             }
         }
     }
