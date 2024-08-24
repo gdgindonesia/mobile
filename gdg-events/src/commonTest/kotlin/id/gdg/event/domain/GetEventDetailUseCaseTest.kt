@@ -2,10 +2,12 @@ package id.gdg.event.domain
 
 import id.gdg.event.data.entity.EventDetail
 import id.gdg.event.data.fake.EventDetailFake
+import id.gdg.event.domain.mapper.toEventDetailModel
 import id.gdg.event.stub.EventDetailRepositoryStub
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GetEventDetailUseCaseTest {
 
@@ -17,8 +19,10 @@ class GetEventDetailUseCaseTest {
 
            val useCase = GetEventDetailUseCaseImpl(repository)
 
-           val expectedValue = EventDetailFake().create<EventDetail>().title
-           assertEquals(expectedValue, useCase(EventDetailFake.EVENT_DETAIL_ID))
+           val expectedValue = EventDetailFake().create<EventDetail>().toEventDetailModel()
+
+           assertTrue { useCase(1).isSuccess }
+           assertTrue { useCase(1).getOrNull() == expectedValue }
        }
     }
 
@@ -29,7 +33,7 @@ class GetEventDetailUseCaseTest {
             repository.setStatus(false)
 
             val useCase = GetEventDetailUseCaseImpl(repository)
-            assertEquals("", useCase(0))
+            assertTrue { useCase(0).isFailure }
         }
     }
 }

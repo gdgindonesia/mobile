@@ -6,14 +6,13 @@ import id.gdg.event.model.EventModel
 
 interface GetUpcomingEventUseCase {
 
-    suspend operator fun invoke(chapterId: Int): EventModel?
+    suspend operator fun invoke(chapterId: Int): Result<EventModel?>
 }
 
 class GetUpcomingEventUseCaseImpl(private val repository: EventRepository) : GetUpcomingEventUseCase {
 
-    override suspend operator fun invoke(chapterId: Int): EventModel? {
+    override suspend operator fun invoke(chapterId: Int): Result<EventModel?> {
         return repository.upcomingEvent(chapterId)
-            .getOrDefault(null)
-            ?.toEventModel()
+            .map { it?.toEventModel() }
     }
 }

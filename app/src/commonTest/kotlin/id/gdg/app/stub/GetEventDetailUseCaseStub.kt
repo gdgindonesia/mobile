@@ -5,11 +5,11 @@ import id.gdg.event.model.EventDetailModel
 
 class GetEventDetailUseCaseStub : GetEventDetailUseCase {
 
-    private var model: EventDetailModel? = null
+    private var model: Result<EventDetailModel?>? = null
 
-    fun setData(eventDetailModel: EventDetailModel?) {
+    fun setData(eventDetailModel: Result<EventDetailModel?>) {
         model = eventDetailModel
     }
 
-    override suspend fun invoke(eventId: Int) = model
+    override suspend fun invoke(eventId: Int) = model ?: error("haven't set the data yet.")
 }

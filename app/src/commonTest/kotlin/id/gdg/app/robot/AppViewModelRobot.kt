@@ -30,15 +30,20 @@ object AppViewModelRobot : KoinTest {
     val testDispatcher = UnconfinedTestDispatcher()
     val testScope = TestScope(testDispatcher + Job())
 
-    val localStore = ChapterSelectionLocalStoreStub()
-
-    private val setCurrentChapterUseCase by lazy { SetChapterIdUseCaseImpl(localStore) }
-    private val getCurrentChapterUseCase by lazy { GetChapterIdUseCaseImpl(localStore) }
-
+    /**
+     * As the mockK haven't support for the Kotlin 2.0 yet,
+     * we have to create a fake of the origin class to ensure we could
+     * stub it easily.
+     */
     val chapterListUseCase = GetChapterListUseCaseStub()
     val previousEventUseCase = GetPreviousEventUseCaseStub()
     val upcomingEventUseCase = GetUpcomingEventUseCaseStub()
     val eventDetailUseCase = GetEventDetailUseCaseStub()
+
+    private val localStore = ChapterSelectionLocalStoreStub()
+
+    val getCurrentChapterUseCase by lazy { GetChapterIdUseCaseImpl(localStore) }
+    private val setCurrentChapterUseCase by lazy { SetChapterIdUseCaseImpl(localStore) }
 
     fun createViewModel() = AppViewModel(
         chapterListUseCase,

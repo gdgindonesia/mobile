@@ -1,19 +1,18 @@
 package id.gdg.event.domain
 
 import id.gdg.event.data.repository.EventDetailRepository
+import id.gdg.event.domain.mapper.toEventDetailModel
 import id.gdg.event.model.EventDetailModel
 
 interface GetEventDetailUseCase {
 
-    // TODO: Create a Data Model for necessary attributes
-    suspend operator fun invoke(eventId: Int): EventDetailModel?
+    suspend operator fun invoke(eventId: Int): Result<EventDetailModel?>
 }
 
 class GetEventDetailUseCaseImpl(private val repository: EventDetailRepository) : GetEventDetailUseCase {
 
-    override suspend operator fun invoke(eventId: Int): EventDetailModel? {
+    override suspend operator fun invoke(eventId: Int): Result<EventDetailModel?> {
         return repository.eventDetail(eventId)
-            .map { EventDetailModel(it.title) }
-            .getOrDefault(null)
+            .map { it.toEventDetailModel() }
     }
 }

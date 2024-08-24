@@ -43,6 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 fun OnboardingScreen(
     chapterList: List<ChapterModel>,
     onChapterSelected: (Int) -> Unit,
+    navigateToMainScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
@@ -56,7 +57,8 @@ fun OnboardingScreen(
         footerOnboardingContent(
             ref = footer,
             chapterList = chapterList,
-            onChapterSelected = onChapterSelected
+            onChapterSelected = onChapterSelected,
+            navigateToMainScreen = navigateToMainScreen
         )
     }
 }
@@ -107,6 +109,7 @@ fun ConstraintLayoutScope.footerOnboardingContent(
     ref: ConstrainedLayoutReference,
     chapterList: List<ChapterModel>,
     onChapterSelected: (Int) -> Unit,
+    navigateToMainScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedChipId by remember { mutableStateOf(0) }
@@ -131,6 +134,7 @@ fun ConstraintLayoutScope.footerOnboardingContent(
             selectedItemId = selectedChipId
         ) {
             selectedChipId = it.id
+            onChapterSelected(it.id)
         }
 
         AnimatedVisibility(selectedChipId > 0) {
@@ -139,9 +143,7 @@ fun ConstraintLayoutScope.footerOnboardingContent(
                     .padding(top = 12.dp)
                     .fillMaxWidth()
                     .height(48.dp),
-                onClick = {
-                    onChapterSelected(selectedChipId)
-                }
+                onClick = { navigateToMainScreen() }
             ) {
                 Text(stringResource(Res.string.common_continue))
             }
