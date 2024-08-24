@@ -10,9 +10,7 @@ plugins {
 }
 
 kotlin {
-    jvm()
     androidTarget()
-    jvmToolchain(17)
 
     val xcf = XCFramework()
     listOf(
