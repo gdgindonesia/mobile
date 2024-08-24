@@ -8,7 +8,6 @@ class GetChapterListUseCaseList {
 
     @Test
     fun `invoked should return a list of ChapterModel with absolute chapter`() {
-        val useCase = GetChapterListUseCase()
         val expected = listOf(
             ChapterModel(540, "GDG Bali"),
             ChapterModel(577, "GDG Jogjakarta"),
@@ -22,6 +21,7 @@ class GetChapterListUseCaseList {
             ChapterModel(1332, "GDG Medan")
         )
 
+        val useCase: GetChapterListUseCase = GetChapterListUseCaseImpl()
         assertEquals(expected, useCase())
     }
 }
