@@ -40,7 +40,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke ChangeChapterId it will return selected chapter id`() {
+    fun `when ChangeChapterId is invoked then selected chapter ID is returned`() {
         val expectedValue = 1
         viewModel.sendEvent(AppEvent.ChangeChapterId(expectedValue))
 
@@ -52,7 +52,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke InitialContent it will return upcoming and previous event`() {
+    fun `when InitialContent is invoked then upcoming and previous events are returned`() {
         val events = robot.createEvents()
 
         robot.upcomingEventUseCase.setData(Result.success(events.first()))
@@ -80,7 +80,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchPreviousEvent it will return top three of previous events`() {
+    fun `when FetchPreviousEvent is invoked then the top three previous events are returned`() {
         val events = robot.createEvents()
         robot.previousEventUseCase.setData(Result.success(events))
 
@@ -96,7 +96,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchPreviousEvent when previous event not found it will return empty list`() {
+    fun `when FetchPreviousEvent is invoked and no previous events exist then an empty list is returned`() {
         robot.previousEventUseCase.setData(Result.success(emptyList()))
 
         viewModel.sendEvent(AppEvent.FetchPreviousEvent)
@@ -111,7 +111,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchPreviousEvent when network error it will return a fail state`() {
+    fun `when FetchPreviousEvent is invoked and a network error occurs then a Fail state is returned`() {
         robot.previousEventUseCase.setData(Result.failure(Throwable("network error")))
 
         viewModel.sendEvent(AppEvent.FetchPreviousEvent)
@@ -124,7 +124,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchUpcomingEvent it will return upcoming event`() {
+    fun `when FetchUpcomingEvent is invoked then the upcoming event is returned`() {
         val events = robot.createEvents()
         robot.upcomingEventUseCase.setData(Result.success(events.first()))
 
@@ -140,7 +140,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchUpcomingEvent when there is no event it will return empty event`() {
+    fun `when FetchUpcomingEvent is invoked and no upcoming event exists then an empty event is returned`() {
         robot.upcomingEventUseCase.setData(Result.success(null))
 
         viewModel.sendEvent(AppEvent.FetchUpcomingEvent)
@@ -155,7 +155,7 @@ class AppViewModelTest : KoinTest {
     }
 
     @Test
-    fun `invoke FetchUpcomingEvent when network error it will return a fail state`() {
+    fun `when FetchUpcomingEvent is invoked and a network error occurs then a Fail state is returned`() {
         robot.upcomingEventUseCase.setData(Result.failure(Throwable("network error")))
 
         viewModel.sendEvent(AppEvent.FetchUpcomingEvent)
