@@ -5,14 +5,10 @@ import kotlinx.serialization.json.Json
 
 class EventDetailFake : Faker() {
 
-    companion object {
-        const val EVENT_DETAIL_ID = 60014
-    }
-
     override fun json(): String {
         return """
             {
-          "id": "$EVENT_DETAIL_ID",
+          "id": "60014",
           "title": "DevFest Jakarta 2023",
           "audience_type": "HYBRID",
           "speaker": null,

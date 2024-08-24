@@ -5,12 +5,11 @@ import id.gdg.event.model.EventModel
 
 class GetPreviousEventUseCaseStub : GetPreviousEventUseCase {
 
-    private var _data = mutableListOf<EventModel>()
+    private var _data: Result<List<EventModel>>? = null
 
-    fun setData(data: List<EventModel>) {
-        _data.clear()
-        _data.addAll(data)
+    fun setData(data: Result<List<EventModel>>) {
+        _data = data
     }
 
-    override suspend fun invoke(chapterId: Int) = _data
+    override suspend fun invoke(chapterId: Int) = _data ?: error("haven't set the data yet.")
 }

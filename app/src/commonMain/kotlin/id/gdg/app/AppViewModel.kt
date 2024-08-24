@@ -2,9 +2,13 @@ package id.gdg.app
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.gdg.app.ui.state.AppEvent
+import id.gdg.app.ui.AppEvent
 import id.gdg.app.ui.state.ChapterUiModel
-import id.gdg.app.ui.state.EventUiModel
+import id.gdg.app.ui.state.EventDetailUiModel
+import id.gdg.app.ui.state.common.UiState
+import id.gdg.app.ui.state.common.asUiState
+import id.gdg.app.ui.state.partial.PreviousEventsUiModel
+import id.gdg.app.ui.state.partial.UpcomingEventUiModel
 import id.gdg.chapter.domain.GetChapterIdUseCase
 import id.gdg.chapter.domain.GetChapterListUseCase
 import id.gdg.chapter.domain.SetChapterIdUseCase
@@ -14,7 +18,11 @@ import id.gdg.event.domain.GetUpcomingEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,13 +39,28 @@ class AppViewModel(
     private val eventDetailUseCase: GetEventDetailUseCase,
 ) : ViewModel() {
 
+    private var currentChapterId = 0
+
     private var _action = MutableSharedFlow<AppEvent>(replay = 50)
 
-    private var _chapterUiState = MutableStateFlow(ChapterUiModel())
-    val chapterUiState get() = _chapterUiState.asStateFlow()
+    private var _upcomingEvent = MutableStateFlow(UpcomingEventUiModel.Empty)
+    private var _previousEvents = MutableStateFlow(PreviousEventsUiModel.Empty)
 
-    private var _eventUiState = MutableStateFlow(EventUiModel())
-    val eventUiState get() = _eventUiState.asStateFlow()
+    val chapterList get() = chapterListUseCase()
+
+    val chapterUiState: StateFlow<ChapterUiModel> = combine(
+        _upcomingEvent,
+        _previousEvents
+    ) { upcoming, previous ->
+        ChapterUiModel(upcoming, previous)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        ChapterUiModel.Default
+    )
+
+    private var _eventDetailUiState = MutableStateFlow(EventDetailUiModel())
+    val eventDetailUiState get() = _eventDetailUiState.asStateFlow()
 
     init {
         observeOnChapterIdChanged()
@@ -51,22 +74,27 @@ class AppViewModel(
         _action.tryEmit(event)
     }
 
-    fun getChapterList() = chapterListUseCase()
-
     private fun observeOnChapterIdChanged() {
         viewModelScope.launch {
             getCurrentChapterUseCase()
                 .collect {
-                    val currentChapterId = it ?: return@collect
-                    fetchEvent(currentChapterId)
+                    val chapterId = it ?: return@collect
+                    currentChapterId = chapterId
                 }
         }
     }
 
     private fun observeActionEvent(action: AppEvent) {
         when (action) {
-            is AppEvent.EventDetail -> fetchEventDetail(action.eventId)
             is AppEvent.ChangeChapterId -> shouldChangeCurrentChapterId(action.chapterId)
+            is AppEvent.InitialContent -> {
+                sendEvent(AppEvent.FetchPreviousEvent)
+                sendEvent(AppEvent.FetchUpcomingEvent)
+            }
+
+            is AppEvent.FetchPreviousEvent -> fetchPreviousEvent(currentChapterId)
+            is AppEvent.FetchUpcomingEvent -> fetchUpcomingEvents(currentChapterId)
+            is AppEvent.EventDetail -> fetchEventDetail(action.eventId)
         }
     }
 
@@ -76,31 +104,32 @@ class AppViewModel(
         }
     }
 
-    private fun fetchEvent(chapterId: Int) {
-        fetchPreviousEvent(chapterId)
-        fetchUpcomingEvents(chapterId)
-    }
-
     private fun fetchPreviousEvent(chapterId: Int) {
+        _previousEvents.update { it.copy(state = UiState.Loading) }
+
         viewModelScope.launch {
             val result = previousEventUseCase(chapterId)
 
-            withContext(Dispatchers.Main) {
-                _chapterUiState.update {
-                    it.copy(previousEvents = result)
-                }
+            _previousEvents.update {
+                it.copy(
+                    state = result.asUiState(),
+                    previousEvents = result.getOrNull() ?: emptyList()
+                )
             }
         }
     }
 
     private fun fetchUpcomingEvents(chapterId: Int) {
+        _upcomingEvent.update { it.copy(state = UiState.Loading) }
+
         viewModelScope.launch {
             val result = upcomingEventUseCase(chapterId)
 
-            withContext(Dispatchers.Main) {
-                _chapterUiState.update {
-                    it.copy(upcomingEvent = result)
-                }
+            _upcomingEvent.update {
+                it.copy(
+                    state = result.asUiState(),
+                    upcomingEvent = result.getOrNull()
+                )
             }
         }
     }
@@ -110,8 +139,8 @@ class AppViewModel(
             val result = eventDetailUseCase(eventId)
 
             withContext(Dispatchers.Main) {
-                _eventUiState.update {
-                    it.copy(detail = result)
+                _eventDetailUiState.update {
+                    it.copy(detail = result.getOrNull())
                 }
             }
         }

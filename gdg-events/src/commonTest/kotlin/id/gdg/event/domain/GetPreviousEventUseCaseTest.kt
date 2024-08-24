@@ -4,6 +4,7 @@ import id.gdg.event.stub.EventRepositoryStub
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GetPreviousEventUseCaseTest {
 
@@ -15,7 +16,7 @@ class GetPreviousEventUseCaseTest {
 
             val useCase = GetPreviousEventUseCaseImpl(repository)
 
-            assertEquals(3, useCase(0).size)
+            assertTrue { useCase(1).isSuccess }
         }
     }
 
@@ -26,7 +27,7 @@ class GetPreviousEventUseCaseTest {
             repository.setStatus(false)
 
             val useCase = GetPreviousEventUseCaseImpl(repository)
-            assertEquals(listOf(), useCase(0))
+            assertTrue { useCase(0).isFailure }
         }
     }
 }

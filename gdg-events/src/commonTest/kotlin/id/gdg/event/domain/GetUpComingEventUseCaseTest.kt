@@ -16,7 +16,7 @@ class GetUpComingEventUseCaseTest {
 
             val useCase = GetUpcomingEventUseCaseImpl(repository)
 
-            assertTrue { useCase(0) != null }
+            assertTrue { useCase(1).isSuccess }
         }
     }
 
@@ -27,7 +27,7 @@ class GetUpComingEventUseCaseTest {
             repository.setStatus(false)
 
             val useCase = GetUpcomingEventUseCaseImpl(repository)
-            assertEquals(null, useCase(0))
+            assertTrue { useCase(0).isFailure }
         }
     }
 }
