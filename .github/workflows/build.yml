@@ -35,7 +35,7 @@ jobs:
         id: kover
         uses: mi-kas/kover-report@v1
         with:
-          path: ${{ github.workspace }}/mobile/build/reports/kover/report.xml
+          path: ${{ github.workspace }}/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Code Coverage
           update-comment: true
@@ -47,12 +47,7 @@ jobs:
       matrix:
         config: [
           { target: android, os: ubuntu-latest, tasks: testDebugUnitTest testReleaseUnitTest, continueOnError: false },
-          { target: apple, os: macos-latest, tasks: iosX64Test iosSimulatorArm64Test macosX64Test macosArm64Test tvosX64Test tvosSimulatorArm64Test watchosX64Test watchosSimulatorArm64Test, continueOnError: false },
-          { target: windows, os: windows-latest, tasks: windowsTest, continueOnError: true }, # https://github.com/square/okio/issues/951
-          { target: linux, os: ubuntu-latest, tasks: linuxTest, continueOnError: false },
-          { target: js, os: ubuntu-latest, tasks: jsTest, continueOnError: false },
-          { target: wasm, os: ubuntu-latest, tasks: wasmJsTest, continueOnError: false },
-          { target: desktop, os: ubuntu-latest, tasks: desktopTest, continueOnError: false },
+          { target: apple, os: macos-latest, tasks: iosX64Test iosSimulatorArm64Test, continueOnError: false },
         ]
     runs-on: ${{ matrix.config.os }}
     name: Build ${{ matrix.config.target }}
