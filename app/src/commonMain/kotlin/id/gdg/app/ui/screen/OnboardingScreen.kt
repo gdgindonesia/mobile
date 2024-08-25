@@ -11,12 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +47,7 @@ fun OnboardingScreen(
 ) {
     ConstraintLayout(
         modifier = modifier
-            .padding(24.dp)
+            .padding(12.dp)
     ) {
         val (gdg, footer) = createRefs()
 
@@ -175,21 +174,18 @@ fun chapterListSelector(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SelectableChip(
     item: ChapterModel,
     isSelected: Boolean,
     onSelect: (ChapterModel) -> Unit
 ) {
-    Chip(
+    AssistChip(
         onClick = { onSelect(item) },
-        colors = ChipDefaults.chipColors(
-            backgroundColor = if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.surface,
-            contentColor = if (isSelected) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface
-        ),
-        border = ChipDefaults.outlinedBorder
-    ) {
-        Text(item.name)
-    }
+        label = { Text(item.name) },
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+            labelColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        )
+    )
 }
