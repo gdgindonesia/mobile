@@ -166,4 +166,51 @@ class AppViewModelTest : KoinTest {
             }
         }
     }
+
+    @Test
+    fun `when EventDetail is invoked then the the event details is returned`() {
+        val expectedValue = EventDetailModel(
+            title = "DevFest!"
+        )
+
+        robot.eventDetailUseCase.setData(Result.success(expectedValue))
+
+        viewModel.sendEvent(AppEvent.EventDetail(1))
+
+        runBlocking {
+            viewModel.eventDetailUiState.test {
+                val actualValue = expectMostRecentItem()
+                assertTrue { actualValue.state is UiState.Success }
+                assertTrue { actualValue.detail != null }
+            }
+        }
+    }
+
+    @Test
+    fun `when EventDetail is invoked and invalid event id then an empty event detail is returned`() {
+        robot.eventDetailUseCase.setData(Result.success(null))
+
+        viewModel.sendEvent(AppEvent.EventDetail(-1))
+
+        runBlocking {
+            viewModel.eventDetailUiState.test {
+                val actualValue = expectMostRecentItem()
+                assertTrue { actualValue.state is UiState.Success }
+                assertTrue { actualValue.detail == null }
+            }
+        }
+    }
+
+    @Test
+    fun `when EventDetail is invoked and a network error occurs then a Fail state is returned`() {
+        robot.eventDetailUseCase.setData(Result.failure(Throwable("network error")))
+
+        viewModel.sendEvent(AppEvent.EventDetail(0))
+
+        runBlocking {
+            viewModel.eventDetailUiState.test {
+                assertTrue { expectMostRecentItem().state is UiState.Fail }
+            }
+        }
+    }
 }
