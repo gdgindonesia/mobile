@@ -41,6 +41,10 @@ kotlin {
             implementation(libs.androidx.datastore)
         }
         commonMain.dependencies {
+            // Libraries
+            implementation(project(":gdg-ui"))
+
+            // Features
             implementation(project(":gdg-chapter"))
             implementation(project(":gdg-events"))
 
@@ -53,8 +57,8 @@ kotlin {
             // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.ui)
+            implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 

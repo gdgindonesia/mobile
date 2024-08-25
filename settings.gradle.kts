@@ -38,3 +38,4 @@ include(":gdg-events")
 
 // Libraries
 include(":gdg-network")
+include(":gdg-ui")
