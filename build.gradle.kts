@@ -8,5 +8,11 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.kotlinxSerialization) apply false
-    alias(libs.plugins.kover) apply false
+    alias(libs.plugins.kover) apply true
+}
+
+dependencies {
+    kover(project(":app"))
+    kover(project(":gdg-chapter"))
+    kover(project(":gdg-events"))
 }

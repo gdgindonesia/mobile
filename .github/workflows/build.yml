@@ -1,8 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -28,7 +26,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Generate kover coverage report
-        run: ./gradlew koverXmlReport
+        run: ./gradlew :app:koverXmlReport
 
       - name: Add coverage report to PR
         if: ${{ github.event_name == 'pull_request' }}
