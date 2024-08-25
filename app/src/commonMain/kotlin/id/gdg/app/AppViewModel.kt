@@ -59,7 +59,7 @@ class AppViewModel(
         ChapterUiModel.Default
     )
 
-    private var _eventDetailUiState = MutableStateFlow(EventDetailUiModel())
+    private var _eventDetailUiState = MutableStateFlow(EventDetailUiModel.Empty)
     val eventDetailUiState get() = _eventDetailUiState.asStateFlow()
 
     init {
@@ -135,12 +135,17 @@ class AppViewModel(
     }
 
     private fun fetchEventDetail(eventId: Int) {
+        _eventDetailUiState.update { it.copy(state = UiState.Loading) }
+
         viewModelScope.launch {
             val result = eventDetailUseCase(eventId)
 
             withContext(Dispatchers.Main) {
                 _eventDetailUiState.update {
-                    it.copy(detail = result.getOrNull())
+                    it.copy(
+                        state = result.asUiState(),
+                        detail = result.getOrNull()
+                    )
                 }
             }
         }
