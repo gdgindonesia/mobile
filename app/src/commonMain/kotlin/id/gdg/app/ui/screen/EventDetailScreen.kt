@@ -17,10 +17,9 @@ import id.gdg.app.ui.AppEvent
 fun EventDetailScreen(viewModel: AppViewModel, eventId: String) {
     val eventDetailUiState by viewModel.eventDetailUiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        if (eventId.isNotEmpty()) {
-            viewModel.sendEvent(AppEvent.EventDetail(eventId.toInt()))
-        }
+    LaunchedEffect(eventId) {
+        if (eventId.isEmpty()) return@LaunchedEffect
+        viewModel.sendEvent(AppEvent.EventDetail(eventId.toInt()))
     }
 
     Box {

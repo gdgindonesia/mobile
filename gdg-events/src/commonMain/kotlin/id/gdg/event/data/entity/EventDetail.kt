@@ -15,17 +15,11 @@ data class EventDetail(
     @SerialName("allows_cohosting")
     val allowsCohosting: Boolean,
 
-    @SerialName("attendee_virtual_venue_link")
-    val attendeeVirtualVenueLink: String,
-
     @SerialName("audience_type")
     val audienceType: String,
 
     @SerialName("banner")
     val banner: Banner,
-
-    @SerialName("banner_crop_vertical")
-    val bannerCropVertical: Int,
 
     @SerialName("chapter")
     val chapter: Chapter,
@@ -205,22 +199,19 @@ data class EventDetail(
     val useFeaturedAttendees: Boolean,
 
     @SerialName("venue_address")
-    val venueAddress: String,
+    val venueAddress: String? = "",
 
     @SerialName("venue_city")
-    val venueCity: String,
+    val venueCity: String? = "",
 
     @SerialName("venue_name")
-    val venueName: String,
+    val venueName: String? = "",
 
     @SerialName("venue_zip_code")
-    val venueZipCode: String,
+    val venueZipCode: String? = "",
 
     @SerialName("video_url")
     val videoUrl: String?,
-
-    @SerialName("virtual_event_type")
-    val virtualEventType: String,
 
     @SerialName("visible_on_parent_chapter_only")
     val visibleOnParentChapterOnly: Boolean
@@ -456,45 +447,6 @@ data class EventDetail(
 
         @SerialName("id")
         val id: Int,
-
-        @SerialName("is_for_sale")
-        val isForSale: Boolean,
-
-        @SerialName("max_per_order")
-        val maxPerOrder: Int,
-
-        @SerialName("min_per_order")
-        val minPerOrder: Int,
-
-        @SerialName("price")
-        val price: Int,
-
-        @SerialName("reported_fees")
-        val reportedFees: Int,
-
-        @SerialName("reported_original_price")
-        val reportedOriginalPrice: Int,
-
-        @SerialName("reported_price")
-        val reportedPrice: Int,
-
-        @SerialName("sale_end_date")
-        val saleEndDate: String,
-
-        @SerialName("sale_end_date_derived_from_event_end")
-        val saleEndDateDerivedFromEventEnd: Boolean,
-
-        @SerialName("sale_end_date_naive")
-        val saleEndDateNaive: String,
-
-        @SerialName("sale_start_date")
-        val saleStartDate: String,
-
-        @SerialName("sale_start_date_derived_from_event_publish")
-        val saleStartDateDerivedFromEventPublish: Boolean,
-
-        @SerialName("sale_start_date_naive")
-        val saleStartDateNaive: String,
 
         @SerialName("title")
         val title: String,

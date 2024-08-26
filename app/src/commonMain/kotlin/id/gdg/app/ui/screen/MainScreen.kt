@@ -39,7 +39,7 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(!chapterUiState.isInitiated) {
         viewModel.sendEvent(AppEvent.InitialContent)
     }
 
@@ -57,14 +57,14 @@ fun MainScreen(
             finishedListener = { fraction -> if (fraction == 1f) hasDetailOpened = null }
         ),
         body = {
-            MainScreenView(
+            MainScreenContent(
                 chapterUiState = chapterUiState,
                 onEventDetailClicked = {
                     // If the screen size is compact (or mobile device screen size), then
                     // navigate to detail page with router. Otherwise, render the [panel].
                     if (windowSizeClazz.widthSizeClass == CommonWindowWidthSizeClass.Compact) {
                         navigateToDetailScreen(it)
-                        return@MainScreenView
+                        return@MainScreenContent
                     }
 
                     selectedEventId = it
@@ -90,7 +90,7 @@ fun MainScreen(
 }
 
 @Composable
-fun MainScreenView(
+fun MainScreenContent(
     chapterUiState: ChapterUiModel,
     onEventDetailClicked: (String) -> Unit,
     onRefreshPreviousContentClicked: () -> Unit
@@ -98,18 +98,13 @@ fun MainScreenView(
     Column {
         UpcomingEventContent(chapterUiState.upcomingEvent)
 
-        Button(
-            onClick = {
-                onEventDetailClicked("60014")
-            }
-        ) {
-            Text("Show Detail")
-        }
-
         PreviousEventContent(
             data = chapterUiState.previousEvents,
             onRefreshContent = {
                 onRefreshPreviousContentClicked()
+            },
+            onEventClicked = {
+                onEventDetailClicked(it)
             }
         )
     }
