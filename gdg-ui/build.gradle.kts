@@ -28,6 +28,8 @@ kotlin {
             implementation(libs.androidx.compose.windowsizeclass)
         }
         commonMain.dependencies {
+            api(libs.util.qdsfdhvh.image.loader)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)

@@ -82,9 +82,9 @@ fun AppContent(
 private fun NavHostController.navigateTo(from: AppRouter? = null, to: AppRouter) {
     navigate(to.route) {
         if (from != null) {
-            popUpTo(from.route) {
-                inclusive = true
-            }
+//            popUpTo(from.route) {
+//                inclusive = true
+//            }
         }
     }
 }

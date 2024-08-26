@@ -30,6 +30,7 @@ kotlin {
             implementation(project(":gdg-network"))
 
             implementation(libs.kotlin.serialization.json)
+            implementation(libs.kotlin.datetime)
             implementation(libs.common.koin)
         }
 

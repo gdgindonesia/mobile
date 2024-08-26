@@ -8,4 +8,5 @@ data class EventModel(
     val eventImageUrl: String,
     val startDate: String,
     val timezoneAbbreviation: String,
+    val audienceType: String
 )
