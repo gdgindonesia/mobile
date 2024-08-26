@@ -6,11 +6,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import id.gdg.app.AppViewModel
 import id.gdg.app.di.ViewModelFactory
+import id.gdg.app.ui.screen.EventDetailScreen
 import id.gdg.app.ui.screen.MainScreen
 import id.gdg.app.ui.screen.OnboardingScreen
 import id.gdg.app.ui.screen.SplashScreen
@@ -23,12 +26,12 @@ fun AppContent(
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppRouter.Onboarding.route, //defaultRoute(state.activeChapterId),
+            startDestination = AppRouter.OnboardingRoute, //defaultRoute(state.activeChapterId),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            composable(route = AppRouter.Splash.route) {
+            composable(route = AppRouter.SplashRoute) {
                 SplashScreen {
                     navController.navigateTo(
                         from = AppRouter.Splash,
@@ -37,7 +40,7 @@ fun AppContent(
                 }
             }
 
-            composable(route = AppRouter.Onboarding.route) {
+            composable(route = AppRouter.OnboardingRoute) {
                 OnboardingScreen(
                     chapterList = viewModel.chapterList,
                     onChapterSelected = { chapterId ->
@@ -52,8 +55,25 @@ fun AppContent(
                 )
             }
 
-            composable(route = AppRouter.Home.route) {
-                MainScreen(viewModel)
+            composable(route = AppRouter.HomeRoute) {
+                MainScreen(
+                    viewModel = viewModel,
+                    navigateToDetailScreen = { eventId ->
+                        navController.navigate(AppRouter.constructEventDetailRoute(eventId))
+                    }
+                )
+            }
+
+            composable(
+                route = AppRouter.EventDetailRoute,
+                arguments = listOf(navArgument(AppRouter.ArgumentEventId) { type = NavType.StringType })
+            ) { backStackEntry ->
+                val eventId = backStackEntry.arguments?.getString(AppRouter.ArgumentEventId).orEmpty()
+
+                EventDetailScreen(
+                    viewModel = viewModel,
+                    eventId = eventId
+                )
             }
         }
     }

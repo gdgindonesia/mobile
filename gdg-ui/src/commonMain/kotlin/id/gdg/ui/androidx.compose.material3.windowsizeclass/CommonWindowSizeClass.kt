@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import kotlin.jvm.JvmInline
 
 @Immutable
-class CommonWindowSizeClass private constructor(
+class CommonWindowSizeClass(
     val widthSizeClass: CommonWindowWidthSizeClass,
     val heightSizeClass: CommonWindowHeightSizeClass
 ) {
