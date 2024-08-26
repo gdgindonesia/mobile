@@ -10,7 +10,7 @@ import platform.UIKit.UIViewController
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-fun calculateWindowSizeClass(controller: UIViewController): WindowSizeClass {
+fun calculateWindowSizeClass(controller: UIViewController): CommonWindowSizeClass {
     val density = LocalDensity.current
 
     val rect: Rect = controller.view.bounds.useContents {
@@ -31,5 +31,5 @@ fun calculateWindowSizeClass(controller: UIViewController): WindowSizeClass {
 }
 
 @Composable
-fun calculateWindowSizeClass(size: DpSize): WindowSizeClass =
+fun calculateWindowSizeClass(size: DpSize): CommonWindowSizeClass =
     CommonWindowSizeClass.calculateFromSize(size)

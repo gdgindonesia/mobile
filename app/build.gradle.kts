@@ -39,7 +39,9 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.common.koin.android)
             implementation(libs.androidx.datastore)
+            implementation(libs.androidx.compose.windowsizeclass)
         }
+
         commonMain.dependencies {
             // Libraries
             implementation(project(":gdg-ui"))
