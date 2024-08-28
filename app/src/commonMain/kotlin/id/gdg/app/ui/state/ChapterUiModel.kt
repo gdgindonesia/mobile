@@ -5,15 +5,13 @@ import id.gdg.app.ui.state.partial.UpcomingEventUiModel
 
 data class ChapterUiModel(
     val upcomingEvent: UpcomingEventUiModel,
-    val previousEvents: PreviousEventsUiModel,
-    val isInitiated: Boolean
+    val previousEvents: PreviousEventsUiModel
 ) {
 
     companion object {
         val Default get() = ChapterUiModel(
             upcomingEvent = UpcomingEventUiModel.Empty,
-            previousEvents = PreviousEventsUiModel.Empty,
-            isInitiated = false
+            previousEvents = PreviousEventsUiModel.Empty
         )
     }
 }
