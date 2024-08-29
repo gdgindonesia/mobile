@@ -8,17 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import id.gdg.app.ui.screen.uimodel.toEventContent
 import id.gdg.app.ui.state.partial.PreviousEventsUiModel
-import id.gdg.ui.component.EventContent
 import id.gdg.ui.component.EventSimpleCard
+import id.gdg.ui.component.HeadlineSection
+import id.gdg.ui.component.shimmer.EventSimpleCardShimmerList
 
 @Composable
 fun PreviousEventContent(
@@ -26,9 +23,12 @@ fun PreviousEventContent(
     onRefreshContent: () -> Unit,
     onEventClicked: (String) -> Unit,
 ) {
-    Box {
+    Box(
+        modifier = Modifier
+            .padding(12.dp)
+    ) {
         AnimatedVisibility(data.state.isLoading) {
-            CircularProgressIndicator()
+            EventSimpleCardShimmerList()
         }
 
         when {
@@ -37,16 +37,12 @@ fun PreviousEventContent(
                     modifier = Modifier
                         .fillMaxWidth(),
                 ) {
-                    item {
-                        Text(
-                            text = "Previous Events",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    item { HeadlineSection("Previous Events") }
 
-                    items(data.previousEvents.map { it.toEventContent() }) {
-                        EventSimpleCard(it) { onEventClicked(it) }
+                    items(data.toEventContent()) {
+                        EventSimpleCard(it) { eventId ->
+                            onEventClicked(eventId)
+                        }
                     }
                 }
             }

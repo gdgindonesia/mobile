@@ -6,6 +6,7 @@ import id.gdg.event.model.EventDetailModel
 import id.gdg.event.model.EventModel
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlin.jvm.JvmInline
 
 fun List<Event>.toEventModels(): List<EventModel> {
     return map { it.toEventModel() }
@@ -20,12 +21,25 @@ fun Event.toEventModel(): EventModel {
         eventImageUrl = picture,
         startDate = formatDate(startDate),
         timezoneAbbreviation = timezoneAbbreviation,
-        audienceType = audienceType.lowercase()
+        audienceType = AudienceType(audienceType)
     )
 }
 
 fun EventDetail.toEventDetailModel(): EventDetailModel {
     return EventDetailModel(title)
+}
+
+@JvmInline
+value class AudienceType(private val value: String) {
+
+    override fun toString(): String {
+        val typeInLowercase = value.lowercase()
+        return when {
+            typeInLowercase.contains("person") -> "In Person"
+            typeInLowercase.contains("hybrid") -> "Hybrid"
+            else -> "Online"
+        }
+    }
 }
 
 internal fun formatDate(dateString: String): String {

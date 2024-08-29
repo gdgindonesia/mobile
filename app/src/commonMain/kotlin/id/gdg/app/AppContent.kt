@@ -1,4 +1,4 @@
-package id.gdg.app.ui
+package id.gdg.app
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,8 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import id.gdg.app.AppViewModel
 import id.gdg.app.di.ViewModelFactory
+import id.gdg.app.ui.AppEvent
+import id.gdg.app.ui.AppRouter
 import id.gdg.app.ui.screen.EventDetailScreen
 import id.gdg.app.ui.screen.MainScreen
 import id.gdg.app.ui.screen.OnboardingScreen

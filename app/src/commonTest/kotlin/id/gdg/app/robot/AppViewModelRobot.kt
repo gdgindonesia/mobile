@@ -12,6 +12,7 @@ import id.gdg.app.stub.GetPreviousEventUseCaseStub
 import id.gdg.app.stub.GetUpcomingEventUseCaseStub
 import id.gdg.chapter.domain.GetChapterIdUseCaseImpl
 import id.gdg.chapter.domain.SetChapterIdUseCaseImpl
+import id.gdg.event.domain.mapper.AudienceType
 import id.gdg.event.model.EventModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -84,7 +85,8 @@ object AppViewModelRobot : KoinTest {
             descriptionShort = "Loren Ipsum",
             eventImageUrl = "https://sample.com/image.png",
             startDate = "",
-            timezoneAbbreviation = "WIB"
+            timezoneAbbreviation = "WIB",
+            audienceType = AudienceType("hybrid")
         ),
         EventModel(
             id = 1,
@@ -93,7 +95,8 @@ object AppViewModelRobot : KoinTest {
             descriptionShort = "Loren Ipsum",
             eventImageUrl = "https://sample.com/image.png",
             startDate = "",
-            timezoneAbbreviation = "WIB"
+            timezoneAbbreviation = "WIB",
+            audienceType = AudienceType("in person")
         ),
         EventModel(
             id = 2,
@@ -102,7 +105,8 @@ object AppViewModelRobot : KoinTest {
             descriptionShort = "Loren Ipsum",
             eventImageUrl = "https://sample.com/image.png",
             startDate = "",
-            timezoneAbbreviation = "WIB"
+            timezoneAbbreviation = "WIB",
+            audienceType = AudienceType("online")
         )
     )
 }

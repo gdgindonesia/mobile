@@ -9,6 +9,6 @@ fun EventModel.toEventContent(): EventContent {
         bannerUrl = eventImageUrl,
         eventName = title,
         date = startDate,
-        type = audienceType
+        type = audienceType.toString()
     )
 }

@@ -12,6 +12,7 @@ plugins {
 kotlin {
     androidTarget()
     jvmToolchain(17)
+    jvm("desktop")
 
     val xcf = XCFramework()
     listOf(
@@ -43,6 +44,7 @@ kotlin {
 dependencies {
     with("de.jensklingenberg.ktorfit:ktorfit-ksp:2.0.0-beta1") {
         add("kspCommonMainMetadata", this)
+        add("kspDesktop", this)
         add("kspAndroid", this)
         add("kspAndroidTest", this)
         add("kspIosX64", this)

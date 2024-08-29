@@ -52,7 +52,7 @@ class AppViewModel(
         _upcomingEvent,
         _previousEvents
     ) { upcoming, previous ->
-        ChapterUiModel(upcoming, previous, true)
+        ChapterUiModel(upcoming, previous)
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
