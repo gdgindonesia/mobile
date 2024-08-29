@@ -11,7 +11,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.ComposeUIViewController
-import id.gdg.app.ui.AppContent
 import id.gdg.ui.DarkColorPalette
 import id.gdg.ui.LightColorPalette
 import id.gdg.ui.androidx.compose.material3.windowsizeclass.LocalWindowSizeClass

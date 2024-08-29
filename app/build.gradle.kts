@@ -20,6 +20,7 @@ kotlin {
         }
     }
     jvmToolchain(17)
+    jvm("desktop")
 
     listOf(
         iosX64(),
@@ -33,13 +34,19 @@ kotlin {
     }
     
     sourceSets {
-        
+        val desktopMain by getting
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.common.koin.android)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.compose.windowsizeclass)
+        }
+
+        desktopMain.dependencies {
+            implementation(libs.kotlinx.coroutines.swing)
+            implementation(compose.desktop.currentOs)
         }
 
         commonMain.dependencies {
@@ -68,6 +75,7 @@ kotlin {
             implementation(libs.common.koin)
             implementation(libs.util.constraintlayout)
         }
+
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.common.koin.test)
@@ -128,3 +136,14 @@ android {
     }
 }
 
+compose.desktop {
+    application {
+        mainClass = "id.gdg.app.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "id.gdg.app"
+            packageVersion = "1.0.0"
+        }
+    }
+}

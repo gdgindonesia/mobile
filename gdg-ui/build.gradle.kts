@@ -10,6 +10,7 @@ plugins {
 kotlin {
     androidTarget()
     jvmToolchain(17)
+    jvm("desktop")
 
     val xcf = XCFramework()
     listOf(
@@ -29,6 +30,7 @@ kotlin {
         }
         commonMain.dependencies {
             api(libs.util.qdsfdhvh.image.loader)
+            api(libs.util.shimmer)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
