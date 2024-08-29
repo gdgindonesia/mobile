@@ -1,5 +1,7 @@
 package id.gdg.event.model
 
+import id.gdg.event.domain.mapper.AudienceType
+
 data class EventModel(
     val id: Long,
     val title: String,
@@ -8,5 +10,5 @@ data class EventModel(
     val eventImageUrl: String,
     val startDate: String,
     val timezoneAbbreviation: String,
-    val audienceType: String
+    val audienceType: AudienceType
 )

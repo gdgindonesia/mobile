@@ -1,9 +1,7 @@
 package id.gdg.app.ui.screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -32,29 +30,23 @@ fun MainScreen(
     var selectedEventId by rememberSaveable { mutableStateOf("") }
 
     val windowSizeClazz: CommonWindowSizeClass = LocalWindowSizeClass.current
-    var hasDetailOpened: Boolean? by rememberSaveable { mutableStateOf(null) }
-    var showSidePanel by rememberSaveable {
-        mutableStateOf(hasDetailOpened != null).also {
-            println("showsidepanel: ${it.value}")
-        }
-    }
+    var shouldPanelOpened: Boolean? by rememberSaveable { mutableStateOf(null) }
+    var panelVisibility by rememberSaveable { mutableStateOf(shouldPanelOpened != null) }
 
-    LaunchedEffect(!chapterUiState.isInitiated) {
+    LaunchedEffect(Unit) {
         viewModel.sendEvent(AppEvent.InitialContent)
     }
 
     LaunchedEffect(windowSizeClazz) {
-        hasDetailOpened =
-            hasDetailOpened.takeIf { windowSizeClazz.widthSizeClass != CommonWindowWidthSizeClass.Compact }
-        println("hasdetail: $hasDetailOpened")
-        println("apaini: ${windowSizeClazz.widthSizeClass != CommonWindowWidthSizeClass.Compact}")
-        showSidePanel = hasDetailOpened != null
+        shouldPanelOpened =
+            shouldPanelOpened.takeIf { windowSizeClazz.widthSizeClass != CommonWindowWidthSizeClass.Compact }
+        panelVisibility = shouldPanelOpened != null
     }
 
     TwoPanelScaffold(
-        panelVisibility = showSidePanel,
+        panelVisibility = panelVisibility,
         animationSpec = TwoPanelScaffoldAnimationSpec(
-            finishedListener = { fraction -> if (fraction == 1f) hasDetailOpened = null }
+            finishedListener = { fraction -> if (fraction == 1f) shouldPanelOpened = null }
         ),
         body = {
             MainScreenContent(
@@ -68,8 +60,8 @@ fun MainScreen(
                     }
 
                     selectedEventId = it
-                    hasDetailOpened = true
-                    showSidePanel = true
+                    shouldPanelOpened = true
+                    panelVisibility = true
                 },
                 onRefreshPreviousContentClicked = {
                     viewModel.sendEvent(AppEvent.FetchPreviousEvent)
@@ -78,7 +70,7 @@ fun MainScreen(
         },
         panel = {
             Surface(tonalElevation = 1.dp) {
-                if (hasDetailOpened != null) {
+                if (shouldPanelOpened != null) {
                     EventDetailScreen(
                         viewModel = viewModel,
                         eventId = selectedEventId

@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import id.gdg.app.ui.AppContent
 import id.gdg.ui.DarkColorPalette
 import id.gdg.ui.LightColorPalette
 import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowSizeClass
