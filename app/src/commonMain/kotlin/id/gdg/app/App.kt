@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import id.gdg.app.di.ViewModelFactory
 import id.gdg.app.ui.AppEvent
 import id.gdg.app.ui.AppRouter
+import id.gdg.app.ui.ScreenScaffold
 import id.gdg.app.ui.screen.EventDetailScreen
 import id.gdg.app.ui.screen.MainScreen
 import id.gdg.app.ui.screen.OnboardingScreen
@@ -27,12 +28,12 @@ fun AppContent(
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppRouter.OnboardingRoute, //defaultRoute(state.activeChapterId),
+            startDestination = AppRouter.Onboarding.toString(), //defaultRoute(state.activeChapterId),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            composable(route = AppRouter.SplashRoute) {
+            composable(route = AppRouter.Splash.toString()) {
                 SplashScreen {
                     navController.navigateTo(
                         from = AppRouter.Splash,
@@ -41,7 +42,7 @@ fun AppContent(
                 }
             }
 
-            composable(route = AppRouter.OnboardingRoute) {
+            composable(route = AppRouter.Onboarding.toString()) {
                 OnboardingScreen(
                     chapterList = viewModel.chapterList,
                     onChapterSelected = { chapterId ->
@@ -56,20 +57,42 @@ fun AppContent(
                 )
             }
 
-            composable(route = AppRouter.HomeRoute) {
-                MainScreen(
+            composable(route = AppRouter.Home.toString()) {
+                ScreenScaffold(
                     viewModel = viewModel,
+                    mainScreen = { viewModel, onEventDetailClicked ->
+                        MainScreen(
+                            viewModel = viewModel,
+                            onEventDetailClicked = onEventDetailClicked
+                        )
+                    },
+                    detailScreen = { viewModel, eventId ->
+                        /**
+                         * Need to show the detail screen on same composable screen
+                         * due to side-to-side scaffold for tablet nor large screens.
+                         */
+                        /**
+                         * Need to show the detail screen on same composable screen
+                         * due to side-to-side scaffold for tablet nor large screens.
+                         */
+                        EventDetailScreen(
+                            viewModel = viewModel,
+                            eventId = eventId
+                        )
+                    },
                     navigateToDetailScreen = { eventId ->
-                        navController.navigate(AppRouter.constructEventDetailRoute(eventId))
+                        navController.navigate(
+                            AppRouter.EventDetail.route.param(eventId)
+                        )
                     }
                 )
             }
 
             composable(
-                route = AppRouter.EventDetailRoute,
-                arguments = listOf(navArgument(AppRouter.ArgumentEventId) { type = NavType.StringType })
+                route = AppRouter.EventDetail.toString(),
+                arguments = listOf(navArgument(AppRouter.ARG_EVENT_ID) { type = NavType.StringType })
             ) { backStackEntry ->
-                val eventId = backStackEntry.arguments?.getString(AppRouter.ArgumentEventId).orEmpty()
+                val eventId = backStackEntry.arguments?.getString(AppRouter.ARG_EVENT_ID).orEmpty()
 
                 EventDetailScreen(
                     viewModel = viewModel,
@@ -81,7 +104,7 @@ fun AppContent(
 }
 
 private fun NavHostController.navigateTo(from: AppRouter? = null, to: AppRouter) {
-    navigate(to.route) {
+    navigate(to.route.toString()) {
         if (from != null) {
 //            popUpTo(from.route) {
 //                inclusive = true
