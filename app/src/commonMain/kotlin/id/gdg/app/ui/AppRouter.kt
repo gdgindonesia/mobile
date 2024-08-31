@@ -1,26 +1,44 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package id.gdg.app.ui
 
-import id.gdg.app.ui.state.EventDetailUiModel
+import kotlin.jvm.JvmInline
 
-sealed class AppRouter(val route: String) {
+sealed class AppRouter(val route: Path) {
 
-    data object Splash : AppRouter(SplashRoute)
-    data object Onboarding : AppRouter(OnboardingRoute)
-    data object Home : AppRouter(HomeRoute)
+    data object Splash : AppRouter(Path("splash"))
+    data object Onboarding : AppRouter(Path("onboarding"))
+    data object Home : AppRouter(Path("home"))
+    data object EventDetail : AppRouter(Path("detail/{${ARG_EVENT_ID}}"))
 
-    data class EventDetail(val eventId: Int) : AppRouter(EventDetailRoute)
+    override fun toString(): String {
+        return "gdg://$route"
+    }
 
     companion object {
-        val SplashRoute get() = "splash"
-        val OnboardingRoute get() = "onboarding"
-
-        val HomeRoute get() = "home"
-
-        // SAMPAH
-        val EventDetailRoute get() = "detail/{$ArgumentEventId}"
-        fun constructEventDetailRoute(eventId: String) = EventDetailRoute
-            .replace("{$ArgumentEventId}", eventId)
-
-        val ArgumentEventId get() = "eventId"
+        const val ARG_EVENT_ID = "eventId"
     }
+}
+
+@JvmInline
+value class Path(private val value: String) {
+
+    fun param(param: String): String {
+        return param(arrayOf(param))
+    }
+
+    fun param(args: Array<String>): String {
+        var result = value
+        val regex = Regex("\\{([^}]+)\\}")
+        val matches = regex.findAll(value)
+        if (matches.any()) {
+            matches.forEachIndexed { index, match ->
+                result = result.replace(match.value, args[index])
+            }
+        }
+
+        return result
+    }
+
+    override fun toString() = value
 }
