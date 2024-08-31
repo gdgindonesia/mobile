@@ -4,7 +4,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import id.gdg.app.AppViewModel
-import id.gdg.app.di.appModule
+import id.gdg.app.common.UpdateScope
+import id.gdg.app.update.ChapterEventUpdateImpl
+import id.gdg.app.update.ChapterUpdateImpl
+import id.gdg.app.update.EventDetailUpdateImpl
 import id.gdg.app.stub.ChapterSelectionLocalStoreStub
 import id.gdg.app.stub.GetChapterListUseCaseStub
 import id.gdg.app.stub.GetEventDetailUseCaseStub
@@ -14,6 +17,7 @@ import id.gdg.chapter.domain.GetChapterIdUseCaseImpl
 import id.gdg.chapter.domain.SetChapterIdUseCaseImpl
 import id.gdg.event.domain.mapper.AudienceType
 import id.gdg.event.model.EventModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -29,7 +33,7 @@ import org.koin.test.KoinTest
 object AppViewModelRobot : KoinTest {
 
     val testDispatcher = UnconfinedTestDispatcher()
-    val testScope = TestScope(testDispatcher + Job())
+    private val testScope = TestScope(testDispatcher + Job())
 
     /**
      * As the mockK haven't support for the Kotlin 2.0 yet,
@@ -46,13 +50,44 @@ object AppViewModelRobot : KoinTest {
     val getCurrentChapterUseCase by lazy { GetChapterIdUseCaseImpl(localStore) }
     private val setCurrentChapterUseCase by lazy { SetChapterIdUseCaseImpl(localStore) }
 
+    private val testUpdateScope by lazy {
+        object : UpdateScope {
+            override val scope: CoroutineScope
+                get() = testScope
+
+            override fun shouldUseViewModelScope(scope: CoroutineScope) = Unit
+            override fun close() = Unit
+        }
+    }
+
+    private val chapterUpdate by lazy {
+        ChapterUpdateImpl(
+            chapterListUseCase,
+            getCurrentChapterUseCase,
+            setCurrentChapterUseCase,
+            testUpdateScope
+        )
+    }
+
+    private val chapterEventUpdate by lazy {
+        ChapterEventUpdateImpl(
+            upcomingEventUseCase,
+            previousEventUseCase,
+            testUpdateScope
+        )
+    }
+
+    private val eventDetailUpdate by lazy {
+        EventDetailUpdateImpl(
+            eventDetailUseCase,
+            testUpdateScope
+        )
+    }
+
     fun createViewModel() = AppViewModel(
-        chapterListUseCase,
-        getCurrentChapterUseCase,
-        setCurrentChapterUseCase,
-        upcomingEventUseCase,
-        previousEventUseCase,
-        eventDetailUseCase
+        chapterUpdate,
+        chapterEventUpdate,
+        eventDetailUpdate
     )
 
     fun setUp() {
@@ -68,7 +103,7 @@ object AppViewModelRobot : KoinTest {
         }
 
         startKoin {
-            modules(appModule + dataStoreModule)
+            modules(dataStoreModule)
         }
     }
 

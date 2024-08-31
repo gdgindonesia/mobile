@@ -4,37 +4,49 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import id.gdg.app.AppViewModel
 import id.gdg.app.ui.AppEvent
 import id.gdg.app.ui.screen.content.PreviousEventContent
 import id.gdg.app.ui.screen.content.UpcomingEventContent
-import id.gdg.app.ui.state.ChapterUiModel
+import id.gdg.app.ui.state.AppUiModel
+import id.gdg.app.ui.state.EventChapterUiModel
+import id.gdg.app.ui.state.EventDetailUiModel
 import id.gdg.ui.TwoPanelScaffold
 import id.gdg.ui.TwoPanelScaffoldAnimationSpec
 import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowSizeClass
 import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowWidthSizeClass
 import id.gdg.ui.androidx.compose.material3.windowsizeclass.LocalWindowSizeClass
+import kotlinx.coroutines.delay
 
 @Composable
 fun MainScreen(
-    viewModel: AppViewModel,
+    uiState: AppUiModel,
+    detailUiState: EventDetailUiModel,
+    onSendEvent: (AppEvent) -> Unit,
     navigateToDetailScreen: (String) -> Unit
 ) {
-    val chapterUiState by viewModel.chapterUiState.collectAsState()
-    var selectedEventId by rememberSaveable { mutableStateOf("") }
-
+    var selectedChapterId by remember { mutableStateOf(uiState.chapterUiState.selectedChapterId) }
     val windowSizeClazz: CommonWindowSizeClass = LocalWindowSizeClass.current
+
     var shouldPanelOpened: Boolean? by rememberSaveable { mutableStateOf(null) }
     var panelVisibility by rememberSaveable { mutableStateOf(shouldPanelOpened != null) }
+    var selectedEventId by rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(selectedChapterId) {
+        onSendEvent(AppEvent.FetchPreviousEvent(selectedChapterId))
+        onSendEvent(AppEvent.FetchUpcomingEvent(selectedChapterId))
+    }
 
     LaunchedEffect(Unit) {
-        viewModel.sendEvent(AppEvent.InitialContent)
+        delay(3_000)
+
+        selectedChapterId = 1053
+        onSendEvent(AppEvent.ChangeChapterId(selectedChapterId))
     }
 
     LaunchedEffect(windowSizeClazz) {
@@ -50,7 +62,7 @@ fun MainScreen(
         ),
         body = {
             MainScreenContent(
-                chapterUiState = chapterUiState,
+                chapterUiState = uiState.eventUiState,
                 onEventDetailClicked = {
                     // If the screen size is compact (or mobile device screen size), then
                     // navigate to detail page with router. Otherwise, render the [panel].
@@ -64,7 +76,7 @@ fun MainScreen(
                     panelVisibility = true
                 },
                 onRefreshPreviousContentClicked = {
-                    viewModel.sendEvent(AppEvent.FetchPreviousEvent)
+                    onSendEvent(AppEvent.FetchPreviousEvent(selectedChapterId))
                 }
             )
         },
@@ -72,8 +84,9 @@ fun MainScreen(
             Surface(tonalElevation = 1.dp) {
                 if (shouldPanelOpened != null) {
                     EventDetailScreen(
-                        viewModel = viewModel,
-                        eventId = selectedEventId
+                        model = detailUiState,
+                        eventId = selectedEventId,
+                        onSendEvent = onSendEvent
                     )
                 }
             }
@@ -83,7 +96,7 @@ fun MainScreen(
 
 @Composable
 fun MainScreenContent(
-    chapterUiState: ChapterUiModel,
+    chapterUiState: EventChapterUiModel,
     onEventDetailClicked: (String) -> Unit,
     onRefreshPreviousContentClicked: () -> Unit
 ) {

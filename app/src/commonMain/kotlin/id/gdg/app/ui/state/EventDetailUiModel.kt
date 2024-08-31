@@ -1,6 +1,6 @@
 package id.gdg.app.ui.state
 
-import id.gdg.app.ui.state.common.UiState
+import id.gdg.app.common.UiState
 import id.gdg.event.model.EventDetailModel
 
 data class EventDetailUiModel(

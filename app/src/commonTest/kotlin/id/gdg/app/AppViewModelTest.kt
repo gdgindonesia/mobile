@@ -1,12 +1,9 @@
 package id.gdg.app
 
 import app.cash.turbine.test
+import id.gdg.app.common.UiState
 import id.gdg.app.robot.AppViewModelRobot
 import id.gdg.app.ui.AppEvent
-import id.gdg.app.ui.state.ChapterUiModel
-import id.gdg.app.ui.state.common.UiState
-import id.gdg.app.ui.state.partial.PreviousEventsUiModel
-import id.gdg.app.ui.state.partial.UpcomingEventUiModel
 import id.gdg.event.model.EventDetailModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,38 +39,10 @@ class AppViewModelTest : KoinTest {
     @Test
     fun `when ChangeChapterId is invoked then selected chapter ID is returned`() {
         val expectedValue = 1
-        viewModel.sendEvent(AppEvent.ChangeChapterId(expectedValue))
+        viewModel.sendEvent(AppEvent. ChangeChapterId(expectedValue))
 
         runBlocking {
             robot.getCurrentChapterUseCase().test {
-                assertTrue { expectMostRecentItem() == expectedValue }
-            }
-        }
-    }
-
-    @Test
-    fun `when InitialContent is invoked then upcoming and previous events are returned`() {
-        val events = robot.createEvents()
-
-        robot.upcomingEventUseCase.setData(Result.success(events.first()))
-        robot.previousEventUseCase.setData(Result.success(events))
-
-        val expectedValue = ChapterUiModel(
-            upcomingEvent = UpcomingEventUiModel(
-                state = UiState.Success,
-                upcomingEvent = events.first()
-            ),
-            previousEvents = PreviousEventsUiModel(
-                state = UiState.Success,
-                previousEvents = events
-            )
-        )
-
-        viewModel.sendEvent(AppEvent.ChangeChapterId(1))
-        viewModel.sendEvent(AppEvent.InitialContent)
-
-        runBlocking {
-            viewModel.chapterUiState.test {
                 assertTrue { expectMostRecentItem() == expectedValue }
             }
         }
@@ -84,13 +53,13 @@ class AppViewModelTest : KoinTest {
         val events = robot.createEvents()
         robot.previousEventUseCase.setData(Result.success(events))
 
-        viewModel.sendEvent(AppEvent.FetchPreviousEvent)
+        viewModel.sendEvent(AppEvent. FetchPreviousEvent(1))
 
         runBlocking {
-            viewModel.chapterUiState.test {
+            viewModel.uiState.test {
                 val actualValue = expectMostRecentItem()
-                assertTrue { actualValue.previousEvents.state is UiState.Success }
-                assertTrue { actualValue.previousEvents.previousEvents.size == 3 }
+                assertTrue { actualValue.eventUiState.previousEvents.state is UiState.Success }
+                assertTrue { actualValue.eventUiState.previousEvents.data.size == 3 }
             }
         }
     }
@@ -99,13 +68,13 @@ class AppViewModelTest : KoinTest {
     fun `when FetchPreviousEvent is invoked and no previous events exist then an empty list is returned`() {
         robot.previousEventUseCase.setData(Result.success(emptyList()))
 
-        viewModel.sendEvent(AppEvent.FetchPreviousEvent)
+        viewModel.sendEvent(AppEvent. FetchPreviousEvent(1))
 
         runBlocking {
-            viewModel.chapterUiState.test {
+            viewModel.uiState.test {
                 val actualValue = expectMostRecentItem()
-                assertTrue { actualValue.previousEvents.state is UiState.Success }
-                assertTrue { actualValue.previousEvents.previousEvents.isEmpty() }
+                assertTrue { actualValue.eventUiState.previousEvents.state is UiState.Success }
+                assertTrue { actualValue.eventUiState.previousEvents.data.isEmpty() }
             }
         }
     }
@@ -114,11 +83,11 @@ class AppViewModelTest : KoinTest {
     fun `when FetchPreviousEvent is invoked and a network error occurs then a Fail state is returned`() {
         robot.previousEventUseCase.setData(Result.failure(Throwable("network error")))
 
-        viewModel.sendEvent(AppEvent.FetchPreviousEvent)
+        viewModel.sendEvent(AppEvent. FetchPreviousEvent(1))
 
         runBlocking {
-            viewModel.chapterUiState.test {
-                assertTrue { expectMostRecentItem().previousEvents.state is UiState.Fail }
+            viewModel.uiState.test {
+                assertTrue { expectMostRecentItem().eventUiState.previousEvents.state is UiState.Fail }
             }
         }
     }
@@ -128,13 +97,13 @@ class AppViewModelTest : KoinTest {
         val events = robot.createEvents()
         robot.upcomingEventUseCase.setData(Result.success(events.first()))
 
-        viewModel.sendEvent(AppEvent.FetchUpcomingEvent)
+        viewModel.sendEvent(AppEvent. FetchUpcomingEvent(1))
 
         runBlocking {
-            viewModel.chapterUiState.test {
+            viewModel.uiState.test {
                 val actualValue = expectMostRecentItem()
-                assertTrue { actualValue.upcomingEvent.state is UiState.Success }
-                assertTrue { actualValue.upcomingEvent.upcomingEvent != null }
+                assertTrue { actualValue.eventUiState.upcomingEvent.state is UiState.Success }
+                assertTrue { actualValue.eventUiState.upcomingEvent.data != null }
             }
         }
     }
@@ -143,13 +112,13 @@ class AppViewModelTest : KoinTest {
     fun `when FetchUpcomingEvent is invoked and no upcoming event exists then an empty event is returned`() {
         robot.upcomingEventUseCase.setData(Result.success(null))
 
-        viewModel.sendEvent(AppEvent.FetchUpcomingEvent)
+        viewModel.sendEvent(AppEvent. FetchUpcomingEvent(0))
 
         runBlocking {
-            viewModel.chapterUiState.test {
+            viewModel.uiState.test {
                 val actualValue = expectMostRecentItem()
-                assertTrue { actualValue.upcomingEvent.state is UiState.Success }
-                assertTrue { actualValue.upcomingEvent.upcomingEvent == null }
+                assertTrue { actualValue.eventUiState.upcomingEvent.state is UiState.Success }
+                assertTrue { actualValue.eventUiState.upcomingEvent.data == null }
             }
         }
     }
@@ -158,11 +127,11 @@ class AppViewModelTest : KoinTest {
     fun `when FetchUpcomingEvent is invoked and a network error occurs then a Fail state is returned`() {
         robot.upcomingEventUseCase.setData(Result.failure(Throwable("network error")))
 
-        viewModel.sendEvent(AppEvent.FetchUpcomingEvent)
+        viewModel.sendEvent(AppEvent. FetchUpcomingEvent(0))
 
         runBlocking {
-            viewModel.chapterUiState.test {
-                assertTrue { expectMostRecentItem().upcomingEvent.state is UiState.Fail }
+            viewModel.uiState.test {
+                assertTrue { expectMostRecentItem().eventUiState.upcomingEvent.state is UiState.Fail }
             }
         }
     }
@@ -175,7 +144,7 @@ class AppViewModelTest : KoinTest {
 
         robot.eventDetailUseCase.setData(Result.success(expectedValue))
 
-        viewModel.sendEvent(AppEvent.EventDetail(1))
+        viewModel.sendEvent(AppEvent. EventDetail(1))
 
         runBlocking {
             viewModel.eventDetailUiState.test {
@@ -190,7 +159,7 @@ class AppViewModelTest : KoinTest {
     fun `when EventDetail is invoked and invalid event id then an empty event detail is returned`() {
         robot.eventDetailUseCase.setData(Result.success(null))
 
-        viewModel.sendEvent(AppEvent.EventDetail(-1))
+        viewModel.sendEvent(AppEvent. EventDetail(-1))
 
         runBlocking {
             viewModel.eventDetailUiState.test {

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,6 +26,9 @@ fun AppContent(
     viewModel: AppViewModel = ViewModelFactory.create(),
     navController: NavHostController = rememberNavController()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val detailUiState by viewModel.eventDetailUiState.collectAsState()
+
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
@@ -43,7 +48,7 @@ fun AppContent(
 
             composable(route = AppRouter.OnboardingRoute) {
                 OnboardingScreen(
-                    chapterList = viewModel.chapterList,
+                    chapterList = uiState.chapterUiState.chapters,
                     onChapterSelected = { chapterId ->
                         viewModel.sendEvent(AppEvent.ChangeChapterId(chapterId))
                     },
@@ -58,7 +63,11 @@ fun AppContent(
 
             composable(route = AppRouter.HomeRoute) {
                 MainScreen(
-                    viewModel = viewModel,
+                    uiState = uiState,
+                    detailUiState = detailUiState,
+                    onSendEvent = {
+                        viewModel.sendEvent(it)
+                    },
                     navigateToDetailScreen = { eventId ->
                         navController.navigate(AppRouter.constructEventDetailRoute(eventId))
                     }
@@ -72,7 +81,8 @@ fun AppContent(
                 val eventId = backStackEntry.arguments?.getString(AppRouter.ArgumentEventId).orEmpty()
 
                 EventDetailScreen(
-                    viewModel = viewModel,
+                    model = detailUiState,
+                    onSendEvent = { viewModel.sendEvent(it) },
                     eventId = eventId
                 )
             }

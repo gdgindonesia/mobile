@@ -39,13 +39,20 @@ fun PreviousEventContent(
                 ) {
                     item { HeadlineSection("Previous Events") }
 
-                    items(data.toEventContent()) {
-                        EventSimpleCard(it) { eventId ->
+                    items(data.data) {
+                        EventSimpleCard(
+                            id = it.id.toString(),
+                            bannerUrl = it.eventImageUrl,
+                            eventName = it.title,
+                            date = it.startDate,
+                            type = it.audienceType.toString(),
+                        ) { eventId ->
                             onEventClicked(eventId)
                         }
                     }
                 }
             }
+
             data.state.isFail -> {
                 Row {
                     Text("gagal loading nih, refresh yuk")

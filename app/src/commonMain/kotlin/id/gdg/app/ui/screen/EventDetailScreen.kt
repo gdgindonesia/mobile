@@ -8,30 +8,30 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import id.gdg.app.AppViewModel
 import id.gdg.app.ui.AppEvent
+import id.gdg.app.ui.state.EventDetailUiModel
 
 @Composable
-fun EventDetailScreen(viewModel: AppViewModel, eventId: String) {
-    val eventDetailUiState by viewModel.eventDetailUiState.collectAsState()
-
+fun EventDetailScreen(
+    model: EventDetailUiModel,
+    onSendEvent: (AppEvent) -> Unit,
+    eventId: String
+) {
     LaunchedEffect(eventId) {
         if (eventId.isEmpty()) return@LaunchedEffect
-        viewModel.sendEvent(AppEvent.EventDetail(eventId.toInt()))
+        onSendEvent(AppEvent.EventDetail(eventId.toInt()))
     }
 
     Box {
-        AnimatedVisibility(eventDetailUiState.state.isLoading) {
+        AnimatedVisibility(model.state.isLoading) {
             CircularProgressIndicator()
         }
 
         when {
-            eventDetailUiState.state.isSuccess -> {
-                Text(text = "${eventDetailUiState.detail}")
+            model.state.isSuccess -> {
+                Text(text = "${model.detail}")
             }
-            eventDetailUiState.state.isFail -> {
+            model.state.isFail -> {
                 Row {
                     Text("gagal loading nih, refresh yuk")
                     Button(

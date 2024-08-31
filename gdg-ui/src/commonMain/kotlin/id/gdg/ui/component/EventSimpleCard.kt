@@ -22,26 +22,22 @@ import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.rememberImageSuccessPainter
 import com.seiko.imageloader.ui.AutoSizeBox
 
-data class EventContent(
-    val id: String,
-    val bannerUrl: String,
-    val eventName: String,
-    val date: String,
-    val type: String
-)
-
 @Composable
 fun EventSimpleCard(
-    content: EventContent,
+    id: String,
+    bannerUrl: String,
+    eventName: String,
+    date: String,
+    type: String,
     navigateToEvent: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
-            .clickable(onClick = { navigateToEvent(content.id) })
+            .clickable(onClick = { navigateToEvent(id) })
             .padding(4.dp)
     ) {
         EventBannerImage(
-            url = content.bannerUrl,
+            url = bannerUrl,
             modifier = Modifier
                 .padding(16.dp)
         )
@@ -50,8 +46,8 @@ fun EventSimpleCard(
                 .weight(1f)
                 .padding(vertical = 10.dp)
         ) {
-            EventTitle(content.eventName)
-            DateAndAudienceType(content.date, content.type)
+            EventTitle(eventName)
+            DateAndAudienceType(date, type)
         }
     }
 }

@@ -1,17 +1,16 @@
 package id.gdg.app.ui.state
 
-import id.gdg.app.ui.state.partial.PreviousEventsUiModel
-import id.gdg.app.ui.state.partial.UpcomingEventUiModel
+import id.gdg.chapter.model.ChapterModel
 
 data class ChapterUiModel(
-    val upcomingEvent: UpcomingEventUiModel,
-    val previousEvents: PreviousEventsUiModel
+    val selectedChapterId: Int,
+    val chapters: List<ChapterModel>
 ) {
 
     companion object {
         val Default get() = ChapterUiModel(
-            upcomingEvent = UpcomingEventUiModel.Empty,
-            previousEvents = PreviousEventsUiModel.Empty
+            selectedChapterId = -1,
+            chapters = listOf()
         )
     }
 }
