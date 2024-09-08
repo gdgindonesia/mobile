@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+
 package id.gdg.app
 
 import androidx.compose.foundation.background
@@ -7,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -23,8 +27,7 @@ import id.gdg.app.di.appModule
 import id.gdg.chapter.data.dataStore
 import id.gdg.ui.DarkColorPalette
 import id.gdg.ui.LightColorPalette
-import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowSizeClass
-import id.gdg.ui.androidx.compose.material3.windowsizeclass.LocalWindowSizeClass
+import id.gdg.ui.LocalWindowSizeClass
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
@@ -42,7 +45,7 @@ fun main() = application {
         val colors = if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette
 
         CompositionLocalProvider(
-            LocalWindowSizeClass provides CommonWindowSizeClass.calculateFromSize(windowState.size)
+            LocalWindowSizeClass provides calculateWindowSizeClass()
         ) {
             MaterialTheme(colorScheme = colors) {
                 AppContent()

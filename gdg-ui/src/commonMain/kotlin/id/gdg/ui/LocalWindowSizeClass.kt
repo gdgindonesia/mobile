@@ -1,7 +1,8 @@
-package id.gdg.ui.androidx.compose.material3.windowsizeclass
+package id.gdg.ui
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalWindowSizeClass: ProvidableCompositionLocal<CommonWindowSizeClass> =
+val LocalWindowSizeClass: ProvidableCompositionLocal<WindowSizeClass> =
     staticCompositionLocalOf { error("No window size class provided") }

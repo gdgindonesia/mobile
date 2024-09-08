@@ -25,10 +25,9 @@ kotlin {
     }
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.androidx.compose.windowsizeclass)
-        }
         commonMain.dependencies {
+            api(libs.composematerial3.window.size.clazz)
+
             api(libs.util.qdsfdhvh.image.loader)
             api(libs.util.shimmer)
 
@@ -43,7 +42,6 @@ kotlin {
 android {
     namespace = "id.gdg.ui"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

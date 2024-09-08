@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
@@ -41,7 +42,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.common.koin.android)
             implementation(libs.androidx.datastore)
-            implementation(libs.androidx.compose.windowsizeclass)
         }
 
         desktopMain.dependencies {
@@ -71,9 +71,15 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            // Material3
+//            implementation(libs.composematerial3.adaptive)
+//            implementation(libs.composematerial3.adaptive.layout)
+//            implementation(libs.composematerial3.adaptive.navigation)
+
             // Common
             implementation(libs.common.koin)
             implementation(libs.util.constraintlayout)
+            implementation(libs.kotlin.serialization.json)
         }
 
         commonTest.dependencies {
