@@ -6,15 +6,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import id.gdg.app.di.ViewModelFactory
 import id.gdg.app.ui.AppEvent
-import id.gdg.app.ui.AppRouter
+import id.gdg.app.ui.EventDetailRouter
+import id.gdg.app.ui.HomeRouter
+import id.gdg.app.ui.OnboardingRouter
 import id.gdg.app.ui.ScreenScaffold
+import id.gdg.app.ui.SplashScreenRouter
 import id.gdg.app.ui.screen.EventDetailScreen
 import id.gdg.app.ui.screen.MainScreen
 import id.gdg.app.ui.screen.OnboardingScreen
@@ -28,36 +30,38 @@ fun AppContent(
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppRouter.Onboarding.toString(), //defaultRoute(state.activeChapterId),
+            startDestination = SplashScreenRouter,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            composable(route = AppRouter.Splash.toString()) {
+            composable<SplashScreenRouter> {
                 SplashScreen {
-                    navController.navigateTo(
-                        from = AppRouter.Splash,
-                        to = AppRouter.Onboarding
-                    )
+                    navController.navigate(OnboardingRouter) {
+                        popUpTo(SplashScreenRouter) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
 
-            composable(route = AppRouter.Onboarding.toString()) {
+            composable<OnboardingRouter> {
                 OnboardingScreen(
                     chapterList = viewModel.chapterList,
                     onChapterSelected = { chapterId ->
                         viewModel.sendEvent(AppEvent.ChangeChapterId(chapterId))
                     },
                     navigateToMainScreen = {
-                        navController.navigateTo(
-                            from = AppRouter.Onboarding,
-                            to = AppRouter.Home
-                        )
+                        navController.navigate(HomeRouter) {
+                            popUpTo(OnboardingRouter) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
 
-            composable(route = AppRouter.Home.toString()) {
+            composable<HomeRouter> {
                 ScreenScaffold(
                     viewModel = viewModel,
                     mainScreen = { viewModel, onEventDetailClicked ->
@@ -81,37 +85,19 @@ fun AppContent(
                         )
                     },
                     navigateToDetailScreen = { eventId ->
-                        navController.navigate(
-                            AppRouter.EventDetail.route.param(eventId)
-                        )
+                        navController.navigate(EventDetailRouter(eventId))
                     }
                 )
             }
 
-            composable(
-                route = AppRouter.EventDetail.toString(),
-                arguments = listOf(navArgument(AppRouter.ARG_EVENT_ID) { type = NavType.StringType })
-            ) { backStackEntry ->
-                val eventId = backStackEntry.arguments?.getString(AppRouter.ARG_EVENT_ID).orEmpty()
+            composable<EventDetailRouter> {
+                val eventDetail = it.toRoute<EventDetailRouter>()
 
                 EventDetailScreen(
                     viewModel = viewModel,
-                    eventId = eventId
+                    eventId = eventDetail.eventId
                 )
             }
         }
     }
 }
-
-private fun NavHostController.navigateTo(from: AppRouter? = null, to: AppRouter) {
-    navigate(to.route.toString()) {
-        if (from != null) {
-//            popUpTo(from.route) {
-//                inclusive = true
-//            }
-        }
-    }
-}
-
-private fun defaultRoute(chapterId: Int) =
-    if (chapterId > 0) AppRouter.Home.route else AppRouter.Splash.route

@@ -1,6 +1,7 @@
 package id.gdg.app.ui
 
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,11 +10,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import id.gdg.app.AppViewModel
+import id.gdg.ui.LocalWindowSizeClass
 import id.gdg.ui.TwoPanelScaffold
 import id.gdg.ui.TwoPanelScaffoldAnimationSpec
-import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowSizeClass
-import id.gdg.ui.androidx.compose.material3.windowsizeclass.CommonWindowWidthSizeClass
-import id.gdg.ui.androidx.compose.material3.windowsizeclass.LocalWindowSizeClass
 
 @Composable
 fun ScreenScaffold(
@@ -24,13 +23,13 @@ fun ScreenScaffold(
 ) {
     var selectedEventId by rememberSaveable { mutableStateOf("") }
 
-    val windowSizeClazz: CommonWindowSizeClass = LocalWindowSizeClass.current
+    val windowSizeClazz = LocalWindowSizeClass.current
     var shouldPanelOpened: Boolean? by rememberSaveable { mutableStateOf(null) }
     var panelVisibility by rememberSaveable { mutableStateOf(shouldPanelOpened != null) }
 
     LaunchedEffect(windowSizeClazz) {
         shouldPanelOpened = shouldPanelOpened.takeIf {
-            windowSizeClazz.widthSizeClass != CommonWindowWidthSizeClass.Compact
+            windowSizeClazz.widthSizeClass != WindowWidthSizeClass.Compact
         }
 
         panelVisibility = shouldPanelOpened != null
@@ -45,7 +44,7 @@ fun ScreenScaffold(
             mainScreen(viewModel) {
                 // If the screen size is compact (or mobile device screen size), then
                 // navigate to detail page with router. Otherwise, render the [panel].
-                if (windowSizeClazz.widthSizeClass == CommonWindowWidthSizeClass.Compact) {
+                if (windowSizeClazz.widthSizeClass == WindowWidthSizeClass.Compact) {
                     navigateToDetailScreen(it)
                     return@mainScreen
                 }
