@@ -1,4 +1,4 @@
-package id.gdg.app.ui.screen.content
+package id.gdg.app.ui.main.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import id.gdg.app.ui.state.partial.PreviousEventsUiModel
+import id.gdg.app.ui.main.state.PreviousEventsUiModel
 import id.gdg.ui.component.EventSimpleCard
 import id.gdg.ui.component.HeadlineSection
 import id.gdg.ui.component.shimmer.EventSimpleCardShimmerList

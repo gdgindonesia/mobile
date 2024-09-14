@@ -1,7 +1,4 @@
-package id.gdg.app.ui.state
-
-import id.gdg.app.ui.state.partial.PreviousEventsUiModel
-import id.gdg.app.ui.state.partial.UpcomingEventUiModel
+package id.gdg.app.ui.main.state
 
 data class ChapterUiModel(
     val upcomingEvent: UpcomingEventUiModel,

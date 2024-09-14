@@ -2,7 +2,9 @@ package id.gdg.app.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import id.gdg.app.AppViewModel
+import id.gdg.app.ui.main.MainViewModel
+import id.gdg.app.ui.detail.EventDetailViewModel
+import id.gdg.app.ui.onboarding.OnboardingViewModel
 import id.gdg.chapter.domain.GetChapterIdUseCase
 import id.gdg.chapter.domain.GetChapterListUseCase
 import id.gdg.chapter.domain.SetChapterIdUseCase
@@ -25,14 +27,24 @@ object ViewModelFactory : KoinComponent {
     private val eventDetailUseCase: GetEventDetailUseCase by inject()
 
     @Composable
-    fun create() = viewModel {
-        AppViewModel(
+    fun onboardingViewModel() = viewModel {
+        OnboardingViewModel(
             chapterListUseCase,
+            setCurrentChapterUseCase
+        )
+    }
+
+    @Composable
+    fun mainViewModel() = viewModel {
+        MainViewModel(
             getCurrentChapterUseCase,
             setCurrentChapterUseCase,
             upComingEventUseCase,
-            previousEventUseCase,
-            eventDetailUseCase
+            previousEventUseCase
         )
+    }
+    @Composable
+    fun eventDetailViewModel() = viewModel {
+        EventDetailViewModel(eventDetailUseCase)
     }
 }

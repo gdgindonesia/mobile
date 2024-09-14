@@ -1,7 +1,7 @@
-package id.gdg.app.ui.screen.content
+package id.gdg.app.ui.main.content
 
 import androidx.compose.runtime.Composable
-import id.gdg.app.ui.state.partial.UpcomingEventUiModel
+import id.gdg.app.ui.main.state.UpcomingEventUiModel
 
 @Composable
 fun UpcomingEventContent(
