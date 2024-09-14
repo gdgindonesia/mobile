@@ -1,4 +1,4 @@
-package id.gdg.app.ui.screen.uimodel
+package id.gdg.app.ui.main.uimodel
 
 import id.gdg.event.model.EventModel
 import id.gdg.ui.component.EventContent

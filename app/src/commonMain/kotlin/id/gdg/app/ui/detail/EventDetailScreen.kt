@@ -1,4 +1,4 @@
-package id.gdg.app.ui.screen
+package id.gdg.app.ui.detail
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
@@ -10,16 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import id.gdg.app.AppViewModel
-import id.gdg.app.ui.AppEvent
 
 @Composable
-fun EventDetailScreen(viewModel: AppViewModel, eventId: String) {
+fun EventDetailScreen(
+    viewModel: EventDetailViewModel,
+    eventId: String,
+    onBack: () -> Unit
+) {
     val eventDetailUiState by viewModel.eventDetailUiState.collectAsState()
 
     LaunchedEffect(eventId) {
-        if (eventId.isEmpty()) return@LaunchedEffect
-        viewModel.sendEvent(AppEvent.EventDetail(eventId.toInt()))
+        if (eventId.isEmpty()) {
+            onBack()
+            return@LaunchedEffect
+        }
+
+        viewModel.fetch(eventId.toInt())
     }
 
     Box {

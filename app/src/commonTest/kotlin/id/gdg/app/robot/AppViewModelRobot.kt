@@ -3,7 +3,7 @@ package id.gdg.app.robot
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import id.gdg.app.AppViewModel
+import id.gdg.app.ui.main.MainViewModel
 import id.gdg.app.di.appModule
 import id.gdg.app.stub.ChapterSelectionLocalStoreStub
 import id.gdg.app.stub.GetChapterListUseCaseStub
@@ -46,7 +46,7 @@ object AppViewModelRobot : KoinTest {
     val getCurrentChapterUseCase by lazy { GetChapterIdUseCaseImpl(localStore) }
     private val setCurrentChapterUseCase by lazy { SetChapterIdUseCaseImpl(localStore) }
 
-    fun createViewModel() = AppViewModel(
+    fun createViewModel() = MainViewModel(
         chapterListUseCase,
         getCurrentChapterUseCase,
         setCurrentChapterUseCase,

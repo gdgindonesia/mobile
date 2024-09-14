@@ -1,4 +1,4 @@
-package id.gdg.app.ui.screen
+package id.gdg.app.ui.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -40,8 +40,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OnboardingScreen(
-    chapterList: List<ChapterModel>,
-    onChapterSelected: (Int) -> Unit,
+    viewModel: OnboardingViewModel,
     navigateToMainScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -55,8 +54,10 @@ fun OnboardingScreen(
 
         footerOnboardingContent(
             ref = footer,
-            chapterList = chapterList,
-            onChapterSelected = onChapterSelected,
+            chapterList = viewModel.chapterList,
+            onChapterSelected = {
+                viewModel.setChapterId(it)
+            },
             navigateToMainScreen = navigateToMainScreen
         )
     }

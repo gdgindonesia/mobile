@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import id.gdg.app.androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import kotlin.jvm.JvmInline
 
-val HomepageMenu = SelectedId(0)
+val MainMenu = SelectedId(0)
 val ChapterInfoMenu = SelectedId(1)
 val ProfileMenu = SelectedId(2)
 
@@ -32,7 +32,7 @@ object BottomNavBar {
     }
 
     private fun create() = listOf(
-        NavItem(HomepageMenu, "Home", Icons.Filled.Home),
+        NavItem(MainMenu, "Home", Icons.Filled.Home),
         NavItem(ChapterInfoMenu,"Chapter", Icons.Filled.Info),
         NavItem(ProfileMenu,"Profile", Icons.Filled.Person),
     )

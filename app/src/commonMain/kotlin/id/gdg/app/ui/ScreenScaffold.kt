@@ -10,11 +10,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import id.gdg.app.AppViewModel
+import id.gdg.app.ui.main.MainViewModel
 import id.gdg.app.androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import id.gdg.app.data.BottomNavBar
 import id.gdg.app.data.ChapterInfoMenu
-import id.gdg.app.data.HomepageMenu
+import id.gdg.app.data.MainMenu
 import id.gdg.app.data.ProfileMenu
 import id.gdg.ui.LocalWindowSizeClass
 import id.gdg.ui.TwoPanelScaffold
@@ -22,13 +22,12 @@ import id.gdg.ui.TwoPanelScaffoldAnimationSpec
 
 @Composable
 fun ScreenScaffold(
-    viewModel: AppViewModel,
-    mainScreen: @Composable (AppViewModel, onEventDetailClicked: (String) -> Unit) -> Unit,
-    detailScreen: @Composable (AppViewModel, String) -> Unit,
+    mainScreen: @Composable (onEventDetailClicked: (String) -> Unit) -> Unit,
+    detailScreen: @Composable (String) -> Unit,
     navigateToDetailScreen: (String) -> Unit
 ) {
     var selectedEventId by rememberSaveable { mutableStateOf("") }
-    var selectedBottomNavItem by rememberSaveable { mutableStateOf(HomepageMenu) }
+    var selectedBottomNavItem by rememberSaveable { mutableStateOf(MainMenu) }
 
     val windowSizeClazz = LocalWindowSizeClass.current
     var shouldPanelOpened: Boolean? by rememberSaveable { mutableStateOf(null) }
@@ -54,13 +53,13 @@ fun ScreenScaffold(
     ) {
         Surface {
             when (selectedBottomNavItem) {
-                HomepageMenu -> TwoPanelScaffold(
+                MainMenu -> TwoPanelScaffold(
                     panelVisibility = panelVisibility,
                     animationSpec = TwoPanelScaffoldAnimationSpec(
                         finishedListener = { fraction -> if (fraction == 1f) shouldPanelOpened = null }
                     ),
                     body = {
-                        mainScreen(viewModel) {
+                        mainScreen {
                             // If the screen size is compact (or mobile device screen size), then
                             // navigate to detail page with router. Otherwise, render the [panel].
                             if (windowSizeClazz.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -76,7 +75,7 @@ fun ScreenScaffold(
                     panel = {
                         Surface(tonalElevation = 1.dp) {
                             if (shouldPanelOpened != null) {
-                                detailScreen(viewModel, selectedEventId)
+                                detailScreen(selectedEventId)
                             }
                         }
                     }

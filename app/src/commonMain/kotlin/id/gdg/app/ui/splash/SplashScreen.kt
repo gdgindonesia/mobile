@@ -1,4 +1,4 @@
-package id.gdg.app.ui.screen
+package id.gdg.app.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

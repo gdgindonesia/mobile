@@ -1,4 +1,4 @@
-package id.gdg.app.ui.state.common
+package id.gdg.app.common
 
 sealed class UiState {
     data object Success : UiState()

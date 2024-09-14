@@ -1,7 +1,7 @@
-package id.gdg.app.ui.state.partial
+package id.gdg.app.ui.main.state
 
-import id.gdg.app.ui.screen.uimodel.toEventContent
-import id.gdg.app.ui.state.common.UiState
+import id.gdg.app.ui.main.uimodel.toEventContent
+import id.gdg.app.common.UiState
 import id.gdg.event.model.EventModel
 
 data class PreviousEventsUiModel(
