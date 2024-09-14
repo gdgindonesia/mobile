@@ -72,9 +72,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             // Material3
-//            implementation(libs.composematerial3.adaptive)
-//            implementation(libs.composematerial3.adaptive.layout)
-//            implementation(libs.composematerial3.adaptive.navigation)
+            implementation(libs.composematerial3.adaptive)
+            implementation(libs.composematerial3.adaptive.layout)
+            implementation(libs.composematerial3.adaptive.navigation)
 
             // Common
             implementation(libs.common.koin)
