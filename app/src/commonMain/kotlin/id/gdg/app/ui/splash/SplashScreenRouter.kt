@@ -1,6 +1,6 @@
 package id.gdg.app.ui.splash
 
-import id.gdg.app.ui.Router
+import id.gdg.app.Router
 import kotlinx.serialization.Serializable
 
 @Serializable

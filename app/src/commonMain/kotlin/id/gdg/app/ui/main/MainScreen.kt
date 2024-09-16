@@ -1,9 +1,11 @@
 package id.gdg.app.ui.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import id.gdg.app.ui.main.content.PreviousEventContent
 import id.gdg.app.ui.main.content.UpcomingEventContent
 
@@ -14,8 +16,19 @@ fun MainScreen(
 ) {
     val chapterUiState by viewModel.chapterUiState.collectAsState()
 
-    Column {
-        UpcomingEventContent(chapterUiState.upcomingEvent)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        UpcomingEventContent(
+            data = chapterUiState.upcomingEvent,
+            onRefreshContent = {
+                viewModel.sendEvent(MainEvent.FetchUpcomingEvent)
+            },
+            onEventClicked = {
+                onEventDetailClicked(it)
+            }
+        )
 
         PreviousEventContent(
             data = chapterUiState.previousEvents,

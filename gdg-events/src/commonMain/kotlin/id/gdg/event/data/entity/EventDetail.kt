@@ -454,9 +454,6 @@ data class EventDetail(
         @SerialName("total_count")
         val totalCount: Int,
 
-        @SerialName("used")
-        val used: Int,
-
         @SerialName("visible")
         val visible: Boolean,
 

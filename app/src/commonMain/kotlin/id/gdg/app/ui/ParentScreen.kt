@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import id.gdg.app.ui.main.MainViewModel
 import id.gdg.app.androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import id.gdg.app.data.BottomNavBar
 import id.gdg.app.data.ChapterInfoMenu
@@ -21,9 +20,9 @@ import id.gdg.ui.TwoPanelScaffold
 import id.gdg.ui.TwoPanelScaffoldAnimationSpec
 
 @Composable
-fun ScreenScaffold(
+fun ParentScreen(
     mainScreen: @Composable (onEventDetailClicked: (String) -> Unit) -> Unit,
-    detailScreen: @Composable (String) -> Unit,
+    detailScreen: @Composable (String, onCloseSidePanel: () -> Unit) -> Unit,
     navigateToDetailScreen: (String) -> Unit
 ) {
     var selectedEventId by rememberSaveable { mutableStateOf("") }
@@ -75,7 +74,9 @@ fun ScreenScaffold(
                     panel = {
                         Surface(tonalElevation = 1.dp) {
                             if (shouldPanelOpened != null) {
-                                detailScreen(selectedEventId)
+                                detailScreen(selectedEventId) {
+                                    panelVisibility = false
+                                }
                             }
                         }
                     }

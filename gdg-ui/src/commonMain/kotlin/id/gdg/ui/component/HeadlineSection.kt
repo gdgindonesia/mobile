@@ -9,12 +9,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HeadlineSection(title: String) {
+fun HeadlineSection(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = 2.dp)
     )
 }

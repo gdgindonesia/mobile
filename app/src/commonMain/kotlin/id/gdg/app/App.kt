@@ -7,12 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import id.gdg.app.di.ViewModelFactory
-import id.gdg.app.ui.main.MainEvent
-import id.gdg.app.ui.ScreenScaffold
+import id.gdg.app.ui.ParentScreen
 import id.gdg.app.ui.detail.EventDetailRouter
 import id.gdg.app.ui.detail.EventDetailScreen
 import id.gdg.app.ui.detail.EventDetailViewModel
@@ -40,7 +38,7 @@ fun AppContent(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            composable<SplashScreenRouter> {
+            safeComposable<SplashScreenRouter> {
                 SplashScreen {
                     navController.navigate(OnboardingRouter) {
                         popUpTo(SplashScreenRouter) {
@@ -50,7 +48,7 @@ fun AppContent(
                 }
             }
 
-            composable<OnboardingRouter> {
+            safeComposable<OnboardingRouter> {
                 OnboardingScreen(
                     viewModel = onboardingViewModel,
                     navigateToMainScreen = {
@@ -63,28 +61,21 @@ fun AppContent(
                 )
             }
 
-            composable<MainRouter> {
-                ScreenScaffold(
+            safeComposable<MainRouter> {
+                ParentScreen(
                     mainScreen = { onEventDetailClicked ->
                         MainScreen(
                             viewModel = mainViewModel,
                             onEventDetailClicked = onEventDetailClicked
                         )
                     },
-                    detailScreen = { eventId ->
-                        /**
-                         * Need to show the detail screen on same composable screen
-                         * due to side-to-side scaffold for tablet nor large screens.
-                         */
-                        /**
-                         * Need to show the detail screen on same composable screen
-                         * due to side-to-side scaffold for tablet nor large screens.
-                         */
+                    detailScreen = { eventId, onCloseSidePanel ->
                         EventDetailScreen(
                             viewModel = eventDetailViewModel,
                             eventId = eventId,
+                            fromPanel = true,
                             onBack = {
-
+                                onCloseSidePanel()
                             }
                         )
                     },
@@ -94,14 +85,15 @@ fun AppContent(
                 )
             }
 
-            composable<EventDetailRouter> {
+            safeComposable<EventDetailRouter> {
                 val eventDetail = it.toRoute<EventDetailRouter>()
 
                 EventDetailScreen(
                     viewModel = eventDetailViewModel,
                     eventId = eventDetail.eventId,
+                    fromPanel = false,
                     onBack = {
-
+                        navController.navigateUp()
                     }
                 )
             }
